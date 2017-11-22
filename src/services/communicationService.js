@@ -21,7 +21,7 @@ class CommunicationService {
         };
     }
 
-    postRequest(address, body, notifyPostRequest) {
+    postRequest(address, body, notifyPostRequest,errorHandler) {
 
         const requestURL = `${BASE_URL}/${address}`;
 
@@ -32,7 +32,7 @@ class CommunicationService {
                 notifyPostRequest(response);
             })
             .catch(error => {
-                new Error(error);
+                errorHandler(error);
             });
     }
 

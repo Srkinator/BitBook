@@ -22,13 +22,29 @@ class AuthenticationService {
         this.commService.postRequest("login", userData, (data) => {
             console.log(data);
             this.storeSession(data.data.sessionId);
-            this.isUserAuthenticated();
+            this.redirect("");
+        },
+            // ERROR HANDLER FOR LOGIN
+        (error) => {
+            if (error) {
+
+                alert("ERROR: " + error.response.status + " " + error.response.data.error.message);
+            }
+
         });
+
     }
 
     register(userData) {
         this.commService.postRequest("register", userData, (data) => {
             console.log(data);
+        },
+            // ERROR HANDLER FOR REGISTER 
+        (error) => {
+            if (error) {
+
+                alert("ERROR: " + error.response.status + " " + error.response.data.error.message);
+            }
         });
     }
 
@@ -41,12 +57,7 @@ class AuthenticationService {
     }
 
     isUserAuthenticated() {
-        const ID = sessionStorage.getItem("sessionId");
-        if (ID) {
-            this.redirect("main");
-        } else {
-            this.redirect("");
-        }
+        return !!sessionStorage.getItem("sessionId");
     }
 }
 

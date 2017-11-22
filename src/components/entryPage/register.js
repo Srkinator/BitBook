@@ -61,6 +61,7 @@ class Register extends React.Component {
             email: mail
         };
 
+
         console.log(userData);
 
         this.authService.register(userData);
