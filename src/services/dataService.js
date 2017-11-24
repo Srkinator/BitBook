@@ -1,5 +1,6 @@
 import CommunicationService from "./communicationService";
 import Profile from "../entities/profile";
+import User from "../entities/user";
 
 class DataService {
     constructor(){
@@ -11,6 +12,22 @@ class DataService {
         this.communication.getRequest("profile", (response) =>{
             const profile = new Profile(response.data);
             profileDataHandler(profile);
+        });
+    }
+
+    getUsersData(userDataHandler, errorHandler){
+        this.communication.getRequest("users", (response) => {
+            let userInfo = response.data;
+            let listOfUsers = [];
+            // console.log(userInfo);
+            userInfo.forEach((user) =>{
+                const newUser = new User(user);
+                listOfUsers.push(newUser);
+            });
+
+            userDataHandler(listOfUsers);
+        }, (error) =>{
+            errorHandler(error);
         });
     }
 

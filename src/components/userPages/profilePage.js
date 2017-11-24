@@ -61,7 +61,7 @@ class UserProfile extends Component {
         this.collectNewAbout = this.collectNewAbout.bind(this);
         this.collectNewName = this.collectNewName.bind(this);
         this.updateProfile = this.updateProfile.bind(this);
-        this.collectNewAboutShort =this.collectNewAboutShort.bind(this);
+        this.collectNewAboutShort = this.collectNewAboutShort.bind(this);
         this.collectNewEmail = this.collectNewEmail.bind(this);
         this.collectNewAvatarUrl = this.collectNewAvatarUrl.bind(this);
     }
@@ -186,7 +186,6 @@ class UserProfile extends Component {
                 <Modal
                     isOpen={this.state.modalIsOpen}
                     onRequestClose={this.closeModal}
-                    contentLabel="Example Modal"
                 >
 
                     <h2>Update Profile</h2>
