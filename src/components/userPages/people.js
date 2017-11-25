@@ -1,13 +1,28 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import {Link} from "react-router-dom";
+
 import DataService from "../../services/dataService";
 import RedirectionService from "../../services/redirectionService";
+import Search from "../common/search";
+
+const imgStyle = {
+    height: "100px",
+    width: "100px",
+    border: "1px solid black",
+    borderRadius: "150px",
+    margin: "0 auto",
+    marginTop: "30px"
+};
 
 class People extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            users: []
+            users: [],
+            searchString: "",
+            matchedUsers: []
         };
 
         this.getData = new DataService();
@@ -17,35 +32,57 @@ class People extends Component {
     }
 
     initBind() {
-
+        this.catchSearch = this.catchSearch.bind(this);
+        this.filterResults = this.filterResults.bind(this);
     }
 
     componentDidMount() {
-
         this.getData.getUsersData((users) => {
             this.setState({
-                users
+                users,
+                matchedUsers: users
             });
 
         }, (error) => {
             console.log(error);
         });
-
     }
 
+    catchSearch(searchString) {
+        this.setState({
+            searchString
+        });
+    }
+
+    filterResults(searchedString) {
+        const users = this.state.users;
+        let matchedUsers = [];
+
+        matchedUsers = users.filter((user) => {
+            return user.name.includes(searchedString);
+        });
+
+        this.setState({
+            matchedUsers
+        });
+    }
 
     render() {
+        console.log(this.state.matchedUsers);
 
         return (
             <div>
-                {this.state.users.map((user) => {
+                <Search dispatch={this.catchSearch} filterResults={this.filterResults} />
+                {this.state.matchedUsers.map((user) => {
                     return (
-                        <div key={user.id}>
-                            <img src = {user.avatarUrl} />
-                            <h3>{user.name}</h3>
-                            <p>{user.aboutShort}</p>
-                            <p>Last Post at: {user.lastPostDate}</p>
-                        </div>
+                        <Link key={user.id} to={`people/${user.id}`} >
+                            <div >
+                                <img style={imgStyle} src={user.avatarUrl} />
+                                <h3>{user.name}</h3>
+                                <p>{user.aboutShort}</p>
+                                <p>Last Post at: {new Date(user.lastPostDate).toLocaleTimeString().slice(0, 5)}</p>
+                            </div>
+                        </Link>
                     );
                 })}
             </div>
