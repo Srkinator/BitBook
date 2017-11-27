@@ -15,7 +15,8 @@ class Main extends Component {
             <div>
                 <Header />
                 <Switch>
-                    <Route path="/profile" component={UserProfile} />
+                    <Route exact path="/profile" component={UserProfile} />
+                    <Route path="/profile/:id" component={UserProfile} />
                     <Route exact path="/people" component={People} />
                     <Route path="/feed" component={Feed} />
                 </Switch>

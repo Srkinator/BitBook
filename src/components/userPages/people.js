@@ -77,7 +77,7 @@ class People extends Component {
                 <Search dispatch={this.catchSearch} filterResults={this.filterResults} />
                 {this.state.matchedUsers.map((user) => {
                     return (
-                        <Link key={user.id} to={`people/${user.id}`} >
+                        <Link key={user.id} to={`/profile/${user.id}`} >
                             <div >
                                 <img style={imgStyle} src={user.avatarUrl} />
                                 <h3>{user.name}</h3>

@@ -21,7 +21,6 @@ class App extends React.Component {
                         <Redirect exact from='/' to='/login' />
                         <Route path='/login' component={EntryPage} />
                         <Route path='/register' component={EntryPage} />
-                        <Route path='/people/:id' component={UserProfile} />
                     </Switch>
                 </div>
             );

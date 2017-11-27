@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import Modal from "react-modal";
+import PropTypes from "prop-types";
 
 import DataService from "../../services/dataService";
 import RedirectionService from "../../services/redirectionService";
@@ -86,6 +87,8 @@ class UserProfile extends Component {
         this.redirect = new RedirectionService();
 
         this.initBind();
+
+
     }
 
     initBind() {
@@ -93,13 +96,38 @@ class UserProfile extends Component {
         this.closeModal = this.closeModal.bind(this);
         this.updateProfile = this.updateProfile.bind(this);
         this.collectFieldValue = this.collectFieldValue.bind(this);
+        this.displayModal = this.displayModal.bind(this);
+        this.displayEditProfileButton = this.displayEditProfileButton.bind(this);
+        this.getMyProfile = this.getMyProfile.bind(this);
+        this.getOtherProfile = this.getOtherProfile.bind(this);
     }
 
-    componentWillReceiveProps(nextProps){
-        console.log(nextProps);
+    componentWillMount() {
+        let userId = this.props.match.params.id;
+        if (userId) {
+            this.getOtherProfile(userId);
+        }
+        else {
+            this.getMyProfile();
+        }
     }
 
-    componentDidMount() {
+    getOtherProfile(id) {
+        
+        this.getData.getSingleUserData((user) => {
+            console.log(user);
+            this.setState({
+                name: user.data.name,
+                avatar: user.data.avatarUrl,
+                about: user.data.about,
+                aboutShort: user.data.aboutShort,
+                commentsCount: user.data.commentsCount,
+                email: user.data.email,
+                postsCount: user.data.postsCount
+            });
+        }, id);
+    }
+    getMyProfile() {
         this.getData.getProfileData((profile) => {
             this.setState({
                 name: profile.name,
@@ -111,6 +139,16 @@ class UserProfile extends Component {
                 email: profile.email
             });
         });
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const userId = nextProps.match.params.id;
+        if (userId) {
+            this.getOtherProfile(userId);
+        }
+        else {
+            this.getMyProfile();
+        }
     }
 
     openModal() {
@@ -161,33 +199,9 @@ class UserProfile extends Component {
 
     }
 
-    render() {
+    displayModal() {
         return (
-            <div className="container">
-                <div className="row">
-
-                    <div className=" mx-auto">
-
-                        <div className="card " style={cardStyle}>
-
-                            <img src={this.state.avatar} className="card-img-top" style={imgStyle} />
-                            <div className="card-block">
-                                <h2 className="card-title profileName ">{this.state.name}</h2>
-                                <input type="button" id="editProfileData" onClick={this.openModal} value="Edit Profile" className="btn btn-info btn-lg loginProfileButton " style={loginStyle} />
-                                <p className="card-text">{this.state.aboutShort}</p>
-                                <p className="card-text">{this.state.about}</p>
-                                <button className="btn btn-success btn-lg profileButton">Posts: {this.state.posts}</button>
-                                <button className="btn btn-success btn-lg profileButton">Comments:  {this.state.comments}</button>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-
+            <div>
                 <Modal
                     isOpen={this.state.modalIsOpen}
                     onRequestClose={this.closeModal}
@@ -197,15 +211,12 @@ class UserProfile extends Component {
                     <nav className="navbar navbar-expand-lg navbar-light modalNavColor">
                         <h2 className="updateProfileHeading">Update Profile</h2>
                     </nav>
-
                     <div className="row">
                         <div className="col-2">
                         </div>
                         <div className="col" style={modalCardStyle} >
-
                             <form>
                                 <input type="button" value="Close" onClick={this.closeModal} className="updateProfileCloseButton btn btn-success btn-lg" style={updateButtonStyle} />
-
                                 <div>
                                     <input type="text" value={this.state.name} onChange={this.collectFieldValue} name="name" placeholder="Please enter a new name" className="updateProfileForm form-control form-control-lg" required />
                                     <input type="email" value={this.state.email} onChange={this.collectFieldValue} name="email" placeholder={`Current email: ${this.state.email}`} className="updateProfileForm form-control form-control-lg" required />
@@ -224,6 +235,39 @@ class UserProfile extends Component {
             </div>
         );
     }
+
+    displayEditProfileButton() {
+        return (
+            <input type="button" value="Edit Profile " id="editProfileData" onClick={this.openModal} className="btn btn-info btn-lg loginProfileButton " style={loginStyle} />
+        );
+    }
+
+    render() {
+        return (
+            <div className="container">
+                <div className="row">
+                    <div className="mx-auto col-6">
+                        <div className="card " style={cardStyle}>
+                            <img src={this.state.avatar} className="card-img-top" style={imgStyle} />
+                            <div className="card-block">
+                                <h2 className="card-title profileName ">{this.state.name}</h2>
+                                <p className="card-text">{this.state.aboutShort}</p>
+                                <p className="card-text">{this.state.about}</p>
+                                {this.props.match.params.id ? "" : this.displayEditProfileButton()}
+                                <button className="btn btn-success btn-lg profileButton">Posts: {this.state.posts}</button>
+                                <button className="btn btn-success btn-lg profileButton">Comments:  {this.state.comments}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {this.props.match.params.id ? "" : this.displayModal()}
+            </div>
+        );
+    }
 }
+UserProfile.propTypes = {
+    match: PropTypes.object,
+    location: PropTypes.object
+};
 
 export default UserProfile;
