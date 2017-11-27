@@ -6,25 +6,58 @@ import DataService from "../../services/dataService";
 import RedirectionService from "../../services/redirectionService";
 
 const imgStyle = {
-    height: "300px",
-    border: "1px solid black",
-    borderRadius: "150px",
-    margin: "0 auto",
-    marginTop: "30px"
+    borderRadius: "50px",
+    width: "60%",
+    margin: "10px auto",
+    padding: "10px",
+    border: "1px solid rgba(178,215,251,0.2)",
+    boxShadow: "-12px 11px 34px -1px rgba(44,62,80,0.34)"
+
+
 };
 
-const profileStyle = {
-    float: "none",
-    margin: "0 auto",
-    maxWidth: "500px",
-    border: "1px solid black",
+const cardStyle = {
+    minWidth: "100%",
+    padding: "20px",
+    margin: "60px 0",
     textAlign: "center",
-    position: "relative"
+    borderRadius: "10px 130px 10px 130px",
+    backgroundColor: "rgba(116, 162, 208, 0.2)",
+    boxShadow: "-12px 11px 34px -1px rgba(44,62,80,0.34)"
+};
+
+const loginStyle = {
+    transitionProperty: "width",
+    transitionDuration: "0.5s",
+    transitionTimingFunction: "linear"
+};
+
+const modalStyle = {
+    content: {
+        height: "90%",
+        overlfow: "scroll",
+        backgroundImage: "url(https://wallpaperlayer.com/img/2015/6/gaussian-blur-wallpaper-3225-3429-hd-wallpapers.jpg)",
+        maxWidth: "80%",
+        margin: "0 auto"
+    }
+
+};
+
+const modalCardStyle = {
+    backgroundColor: "rgba(116, 162, 208, 0.3)",
+    padding: "30px",
+    margin: "50px 0",
+    borderRadius: "10px 10px 10px 10px",
+    positon: "relative"
+};
+
+const updateButtonStyle = {
+    transition: "width 0.5s",
+    transitionTimingFunction: "linear"
 };
 
 const nameStyle = {
     textAlign: "center",
-    color: "red"
 };
 
 class UserProfile extends Component {
@@ -130,46 +163,63 @@ class UserProfile extends Component {
 
     render() {
         return (
-            <div style={profileStyle}>
+            <div className="container">
                 <div className="row">
-                    <img src={this.state.avatar} style={imgStyle} />
+
+                    <div className=" mx-auto">
+
+                        <div className="card " style={cardStyle}>
+
+                            <img src={this.state.avatar} className="card-img-top" style={imgStyle} />
+                            <div className="card-block">
+                                <h2 className="card-title profileName ">{this.state.name}</h2>
+                                <input type="button" id="editProfileData" onClick={this.openModal} value="Edit Profile" className="btn btn-info btn-lg loginProfileButton " style={loginStyle} />
+                                <p className="card-text">{this.state.aboutShort}</p>
+                                <p className="card-text">{this.state.about}</p>
+                                <button className="btn btn-success btn-lg profileButton">Posts: {this.state.posts}</button>
+                                <button className="btn btn-success btn-lg profileButton">Comments:  {this.state.comments}</button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
                 </div>
 
-                <div className="" style={nameStyle}>
-                    <h2>{this.state.name}</h2>
-                </div>
-
-                <div>
-                    <p>{this.state.aboutShort}</p>
-                    <p>{this.state.about}</p>
-                </div>
-
-                <div className="">
-                    <button>Posts: {this.state.posts}</button>
-                    <button>Comments:  {this.state.comments}</button>
-                </div>
-
-                <br />
-
-                <input type="button" id="editProfileData" onClick={this.openModal} value="Edit Profile" />
                 <Modal
                     isOpen={this.state.modalIsOpen}
                     onRequestClose={this.closeModal}
+                    contentLabel="Example Modal"
+                    style={modalStyle}
                 >
+                    <nav className="navbar navbar-expand-lg navbar-light modalNavColor">
+                        <h2 className="updateProfileHeading">Update Profile</h2>
+                    </nav>
 
-                    <h2>Update Profile</h2>
-                    <form>
-                        <div>
-                            <input type="text" value={this.state.name} onChange={this.collectFieldValue} name="name" placeholder="Please enter a new name" required />
-                            <input type="text" value={this.state.email} onChange={this.collectFieldValue} name="email" placeholder={`Current email: ${this.state.email}`} required  />
-                            <input type="text" value={this.state.aboutShort} onChange={this.collectFieldValue} name="aboutShort" placeholder="Please enter a short description" required  />
-                            <input type="text" value={this.state.avatarUrl} onChange={this.collectFieldValue} name="avatarUrl" placeholder="Please enter new avatar url" required  />
+                    <div className="row">
+                        <div className="col-2">
                         </div>
-                        <textarea value={this.state.about} onChange={this.collectFieldValue} name="about" placeholder="Please tell us something about yourself" rows="5" required ></textarea>
-                        <input type="button" value="Update" onClick={this.updateProfile} />
-                        <input type="button" value="Close" onClick={this.closeModal} />
-                        <p>{this.state.isThereError ? `Error ${this.state.error}: All inputs must be filled` : ""}</p>
-                    </form>
+                        <div className="col" style={modalCardStyle} >
+
+                            <form>
+                                <input type="button" value="Close" onClick={this.closeModal} className="updateProfileCloseButton btn btn-success btn-lg" style={updateButtonStyle} />
+
+                                <div>
+                                    <input type="text" value={this.state.name} onChange={this.collectFieldValue} name="name" placeholder="Please enter a new name" className="updateProfileForm form-control form-control-lg" required />
+                                    <input type="email" value={this.state.email} onChange={this.collectFieldValue} name="email" placeholder={`Current email: ${this.state.email}`} className="updateProfileForm form-control form-control-lg" required />
+                                    <input type="text" value={this.state.aboutShort} onChange={this.collectFieldValue} name="aboutShort" placeholder="Please enter a short description" className="updateProfileForm form-control form-control-lg" required />
+                                    <input type="text" value={this.state.avatarUrl} onChange={this.collectFieldValue} name="avatarUrl" placeholder="Please enter new avatar url" className="updateProfileForm form-control form-control-lg" required />
+                                </div>
+                                <textarea value={this.state.about} onChange={this.collectFieldValue} name="about" placeholder="Please tell us something about yourself" rows="5" className="updateProfileForm form-control" required></textarea>
+                                <input type="button" value="Update" onClick={this.updateProfile} className="updateProfileUpdateButton btn btn-info btn-lg" style={updateButtonStyle} />
+                                <p>{this.state.isThereError ? `Error ${this.state.error}: All inputs must be filled` : ""}</p>
+                            </form>
+                        </div>
+                        <div className="col-2">
+                        </div>
+                    </div>
                 </Modal>
             </div>
         );

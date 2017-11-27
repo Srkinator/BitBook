@@ -4,6 +4,15 @@ import { Link } from "react-router-dom";
 import AuthenticationService from "../../services/authenticationService";
 import Feed from "../userPages/feed";
 
+const loginButton = {
+    borderRadius: "5px",
+    position: "absolute", 
+    right: "35px", 
+    bottom: "30px" ,
+    transition: "width 0.5s",
+    transitionTimingFunction: "linear"
+};
+
 class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -106,15 +115,15 @@ class Login extends React.Component {
         return (
             <div>
                 <form onSubmit={this.handleLoginRequest}>
-                    <label htmlFor="loginEmail"><b>Email</b></label>
+                    <label htmlFor="loginEmail" className="labelStyle" ><b>Email</b></label>
                     <br />
-                    <input type="email" id="loginEmail" onChange={this.getEmailInput} onKeyPress={this.handleKeyPress} value={event.target.value} placeholder="Email" style={{ marginBottom: "5px", width: "100%" }} />
+                    <input type="email" id="loginEmail" onChange={this.getEmailInput} onKeyPress={this.handleKeyPress} value={event.target.value} placeholder="Email" className="form-control form-control-lg" style={{ marginBottom: "5px", width: "100%" }} />
                     <br />
-                    <label htmlFor="loginPass"><b>Password</b></label>
+                    <label htmlFor="loginPass" className="labelStyle" ><b>Password</b></label>
                     <br />
-                    <input type="password" id="loginPass" onChange={this.getPassInput} onKeyPress={this.handleKeyPress} value={event.target.value} placeholder="Password" style={{ marginBottom: "15px", width: "100%" }} />
+                    <input type="password" id="loginPass" onChange={this.getPassInput} onKeyPress={this.handleKeyPress} value={event.target.value} placeholder="Password" className="form-control form-control-lg"  style={{ marginBottom: "15px", width: "100%" }} />
                     <br />
-                    <button className={`btn btn-primary ${clName}`} id="loginButton" style={{ marginLeft: "83%", borderRadius: "5px", width: "80px", position: "relative", top: "130px" }}>Login</button>
+                    <button className={`btn btn-primary btn-lg entryPageButton ${clName}`} id="loginButton" style={loginButton}>Login</button>
                     <p id="error"> {this.state.isThereError ? this.state.errorMessage : ""} </p>
                     <p>{this.state.isThereRealError ? this.state.error : ""}</p>
 

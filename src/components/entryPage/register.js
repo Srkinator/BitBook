@@ -4,6 +4,14 @@ import AuthenticationService from "../../services/authenticationService";
 import ValidationService from "../../services/validationService";
 import RedirectionService from "../../services/redirectionService";
 
+const registerButton = {
+    borderRadius: "5px",
+    transition: "width 0.5s",
+    transitionTimingFunction: "linear",
+    margin: "5px",
+    float: "right"
+};
+
 class Register extends React.Component {
     constructor(props) {
         super(props);
@@ -100,27 +108,27 @@ class Register extends React.Component {
         return (
             <div>
                 <form>
-                    <label htmlFor="fullName"><b>Name</b></label>
+                    <label htmlFor="fullName" className="labelStyle"><b>Name</b></label>
                     <br />
-                    <input type="text" id="fullName" onChange={this.nameChangeHandler} value={event.target.value} placeholder="Name" style={{ marginBottom: "5px", width: "100%" }} />
+                    <input type="text" id="fullName" onChange={this.nameChangeHandler} value={event.target.value} placeholder="Name" style={{ marginBottom: "5px", width: "100%" }} className="form-control form-control-lg" />
                     <br />
-                    <label htmlFor="surname"><b>Surname</b></label>
+                    <label htmlFor="surname" className="labelStyle"><b>Surname</b></label>
                     <br />
-                    <input type="text" id="surname" onChange={this.usernameChangeHandler} value={event.target.value} placeholder="Surname" style={{ marginBottom: "5px", width: "100%" }} />
+                    <input type="text" id="surname" onChange={this.usernameChangeHandler} value={event.target.value} placeholder="Surname" style={{ marginBottom: "5px", width: "100%" }} className="form-control form-control-lg" />
                     <br />
-                    <label htmlFor="registerEmail"><b>Email</b></label>
+                    <label htmlFor="registerEmail" className="labelStyle"><b>Email</b></label>
                     <br />
-                    <input type="email" id="registerEmail" onChange={this.emailChangeHandler} value={event.target.value} placeholder="Email Address" style={{ marginBottom: "5px", width: "100%" }} />
+                    <input type="email" id="registerEmail" onChange={this.emailChangeHandler} value={event.target.value} placeholder="Email Address" style={{ marginBottom: "5px", width: "100%" }} className="form-control form-control-lg" />
                     <br />
-                    <label htmlFor="registerPass"><b>Password</b></label>
+                    <label htmlFor="registerPass" className="labelStyle"><b>Password</b></label>
                     <br />
-                    <input type="password" id="registerPass" onChange={this.passwordChangeHandler} value={event.target.value} placeholder="Min 6 characters" style={{ marginBottom: "15px", width: "100%" }} />
+                    <input type="password" id="registerPass" onChange={this.passwordChangeHandler} value={event.target.value} placeholder="Min 6 characters" style={{ marginBottom: "15px", width: "100%" }} className="form-control form-control-lg"/>
                     <br />
-                    <label htmlFor="repeatedPass"><b>Repeat Password</b></label>
+                    <label htmlFor="repeatedPass" className="labelStyle"><b>Repeat Password</b></label>
                     <br />
-                    <input type="password" id="repeatedPass" onChange={this.passwordConfirmedHandler} value={event.target.value} placeholder="Min 6 characters" style={{ marginBottom: "15px", width: "100%" }} />
+                    <input type="password" id="repeatedPass" onChange={this.passwordConfirmedHandler} value={event.target.value} placeholder="Min 6 characters" style={{ marginBottom: "15px", width: "100%" }} className="form-control form-control-lg"/>
                     <br />
-                    <button className={`btn btn-primary ${clName}`} id="registerButton" onClick={this.allRegisterData} style={{ marginLeft: "83%", borderRadius: "5px", width: "80px" }}>Register</button>
+                    <button className={`btn btn-primary btn-lg entryPageButton ${clName}`} id="registerButton" onClick={this.allRegisterData} style={registerButton}>Register</button>
                     <p>{this.state.isThereError ? this.state.error : ""}</p>
                 </form>
             </div>

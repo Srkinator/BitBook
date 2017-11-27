@@ -1,23 +1,111 @@
+html {
+    min-height: 100%;
+}
+
+.bg {
+       background-image: url("https://wallpaperlayer.com/img/2015/6/gaussian-blur-wallpaper-3225-3429-hd-wallpapers.jpg");
+        height: 100%; 
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+}
 
 .checked{
-    background-color: rgb(104, 187, 231);
+    background-color: rgba(116, 208, 146, 0.2);
+    box-shadow: -12px 11px 34px -1px rgba(44,62,80,0.34);
 }
 
 .hover:link {
     text-decoration: none;
 }
 
-.hover:visited {
-    background-color: rgb(104, 187, 231);
-}
 
 .hover:hover {
-    background-color: rgb(104, 187, 231);
+    background-color: rgba(116, 208, 146, 0.2);
 }
 
 .hover:active {
-    background-color: rgb(104, 187, 231);
+    box-shadow: -12px 11px 34px -1px rgba(44,62,80,0.34);
 } 
+
+.navColor {
+    background-color: rgba(65, 105, 144, 1);
+}
+
+.navLink:hover {
+    font-weight: bold;
+}
+
+.profileName {
+    font-weight: bold;
+    color: rgba(44, 62, 80, 0.9)
+    
+}
+
+.profileButton {
+    margin: 30px 20%;
+}
+
+.loginProfileButton {
+    width: 60%;
+    margin: 10px 0px 30px 0;  
+    box-shadow: -12px 11px 34px -1px rgba(44,62,80,0.34); 
+}
+
+.loginProfileButton:hover {
+    width: 90%;
+}
+
+.updateProfileForm {
+    display: block;
+    width: 60%;
+    margin: 30px auto;
+}
+
+.updateProfileCloseButton {
+   float: right;
+   margin-bottom: 30px;
+   width: 20%;
+}
+
+.updateProfileCloseButton:hover {
+    width: 30%;
+}
+
+.updateProfileUpdateButton {
+    width: 30%;
+ 
+}
+
+.updateProfileUpdateButton:hover {
+    width: 40%; 
+}
+
+.updateProfileHeading {
+    color: rgba(67, 93, 119,0.9);
+}
+
+.modalNavColor {
+    background-color: rgba(116, 162, 208, 0.3);
+}
+
+.labelStyle {
+    color: rgba(46, 79, 96, 0.9);
+}
+
+.entryPageButton {
+    width: 25%;
+}
+.entryPageButton:hover {
+    width: 50%;
+}
+
+.welcomeStyle {
+    text-align: center;
+    color: rgba(44, 62, 80, 1);
+    padding-right: 15%;
+    line-height: 2em;
+}
 
 
 

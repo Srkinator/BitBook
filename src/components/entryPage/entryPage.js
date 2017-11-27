@@ -8,22 +8,25 @@ import Welcome from "./welcome";
 
 const formStyle = {
     fontSize: "1.5em",
-    padding: "3px",
-    border: "1px solid black",
+    padding: "5px",
     float: "left",
     borderRadius: "5px",
     width: "50%",
-    textAlign: "center"
+    height: "50px",
+    textAlign: "center",
+    margin: "10px 0",
+    color: "rgba(46, 79, 96, 0.7)"
 };
 
 const switchBox = {
-    border: "1px solid black",
     borderRadius: "5px",
+    boxShadow: "-12px 11px 34px -1px rgba(44,62,80,0.34)",
     display: "inline-block",
     width: "100%",
-    backgroundColor: "rgb(104, 187, 231)",
-    padding: "15px",
-    height: "415px"
+    backgroundColor: "rgba(116, 208, 146, 0.2)",
+    padding: "30px 20px 20px 20px",
+    minHeight: "400px",
+    positon: "relative"
 };
 
 class EntryPage extends React.Component {
