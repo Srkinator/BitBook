@@ -8,6 +8,7 @@ const navLinkStyle = {
     transitionTimingFunction: "step-start",
     paddingLeft: "25px"
 
+
 };
 
 class Header extends Component {

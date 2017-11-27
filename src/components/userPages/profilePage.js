@@ -12,8 +12,6 @@ const imgStyle = {
     padding: "10px",
     border: "1px solid rgba(178,215,251,0.2)",
     boxShadow: "-12px 11px 34px -1px rgba(44,62,80,0.34)"
-
-
 };
 
 const cardStyle = {
@@ -40,7 +38,6 @@ const modalStyle = {
         maxWidth: "80%",
         margin: "0 auto"
     }
-
 };
 
 const modalCardStyle = {
@@ -158,18 +155,14 @@ class UserProfile extends Component {
                 error: error.response.status
             });
         });
-
     }
 
     render() {
         return (
             <div className="container">
                 <div className="row">
-
-                    <div className=" mx-auto">
-
-                        <div className="card " style={cardStyle}>
-
+                    <div className="mx-auto col-6">
+                        <div className="card" style={cardStyle}>
                             <img src={this.state.avatar} className="card-img-top" style={imgStyle} />
                             <div className="card-block">
                                 <h2 className="card-title profileName ">{this.state.name}</h2>
@@ -178,14 +171,9 @@ class UserProfile extends Component {
                                 <p className="card-text">{this.state.about}</p>
                                 <button className="btn btn-success btn-lg profileButton">Posts: {this.state.posts}</button>
                                 <button className="btn btn-success btn-lg profileButton">Comments:  {this.state.comments}</button>
-
                             </div>
-
                         </div>
-
                     </div>
-
-
                 </div>
 
                 <Modal

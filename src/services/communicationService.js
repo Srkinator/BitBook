@@ -32,7 +32,8 @@ class CommunicationService {
                 notifyPostRequest(response);
             })
             .catch(error => {
-                handleError(error);
+                let errorMsg = error.response ? error.response.code : "Server unavailable";
+                handleError(errorMsg);
             });
     }
 
@@ -46,7 +47,9 @@ class CommunicationService {
                 notifyGetRequest(response);
             })
             .catch(error => {
-                handleError(error);
+                console.log(error);
+                let errorMsg = error.response ? error.response.code : "Server unavailable";
+                handleError(errorMsg);
             });
     }
 
@@ -60,10 +63,10 @@ class CommunicationService {
                 notifyGetRequest(response);
             })
             .catch(error => {
-                handleError(error);
+                let errorMsg = error.response ? error.response.code : "Server unavailable";
+                handleError(errorMsg);
             });
     }
-
 }
 
 export default CommunicationService;

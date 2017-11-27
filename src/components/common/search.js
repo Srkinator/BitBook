@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
+const searchStyle = {
+    margin: "40px auto",
+    padding: "10px"
+};
+
 class Search extends Component {
     constructor(props) {
         super(props);
@@ -27,11 +32,10 @@ class Search extends Component {
         this.props.dispatch(this.state.searchString);
     }
 
-
     render() {
         return (
-            <div>
-                <input type="text" value={this.state.searchString} onChange={this.searchValue} placeholder = "Search users"/>
+            <div >
+                <input type="text" value={this.state.searchString} onChange={this.searchValue} placeholder = "Search users" className="form-control mr-sm-2" style={searchStyle}/>
             </div>
         );
     }

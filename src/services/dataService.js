@@ -26,10 +26,13 @@ class DataService {
 
             userDataHandler(listOfUsers);
         }, (error) =>{
-            errorHandler(error);
+            if(!errorHandler){
+                console.warn("Handler not provided");
+            } else {
+                errorHandler(error);
+            }
         });
     }
-
 
     updateProfileData(newData, errorHandler){
         this.communication.putRequest("Profiles", newData, (response) =>{

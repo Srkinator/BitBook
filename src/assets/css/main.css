@@ -1,13 +1,15 @@
 html {
     min-height: 100%;
+   
 }
 
 .bg {
        background-image: url("https://wallpaperlayer.com/img/2015/6/gaussian-blur-wallpaper-3225-3429-hd-wallpapers.jpg");
         height: 100%; 
-        background-position: center;
+   
         background-repeat: no-repeat;
-        background-size: cover;
+        background-attachment: fixed;
+        background-size: cover
 }
 
 .checked{
@@ -107,7 +109,10 @@ html {
     line-height: 2em;
 }
 
+.peopleCardBody {
+    color: rgba(44, 62, 80, 1);
+}
 
-
-
-
+.peopleCardBody:hover {
+    color: rgb(49, 103, 151);
+}

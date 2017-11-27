@@ -48,7 +48,6 @@ class Login extends React.Component {
         });
     }
 
-
     getPassInput(event) {
         const passInput = event.target.value;
 
@@ -90,7 +89,7 @@ class Login extends React.Component {
             this.authService.login(userData, (error) =>{
                 this.setState({
                     isThereRealError: true,
-                    error: error.response.code
+                    error: errorMsg
                 });
             });
 
@@ -98,8 +97,6 @@ class Login extends React.Component {
                 emailInput: "",
                 passInput: ""
             });
-
-
         }
     }
 
@@ -124,9 +121,8 @@ class Login extends React.Component {
                     <input type="password" id="loginPass" onChange={this.getPassInput} onKeyPress={this.handleKeyPress} value={event.target.value} placeholder="Password" className="form-control form-control-lg"  style={{ marginBottom: "15px", width: "100%" }} />
                     <br />
                     <button className={`btn btn-primary btn-lg entryPageButton ${clName}`} id="loginButton" style={loginButton}>Login</button>
-                    <p id="error"> {this.state.isThereError ? this.state.errorMessage : ""} </p>
+                    <p id="error"> {this.state.isThereError ? this.state.errorMessage : ""}</p>
                     <p>{this.state.isThereRealError ? this.state.error : ""}</p>
-
                 </form>
             </div>
         );
