@@ -41,7 +41,6 @@ const modalStyle = {
         maxWidth: "80%",
         margin: "0 auto"
     }
-
 };
 
 const modalCardStyle = {
@@ -113,7 +112,7 @@ class UserProfile extends Component {
     }
 
     getOtherProfile(id) {
-        
+
         this.getData.getSingleUserData((user) => {
             console.log(user);
             this.setState({

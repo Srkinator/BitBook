@@ -22,7 +22,11 @@ class DataService {
             datahandler(response);
 
         }, (error) => {
-            errorHandler(error);
+            if(!errorHandler) {
+                console.log("Handler not provided");
+            } else {
+                errorHandler(error);
+            }
         });
     }
 
@@ -51,7 +55,11 @@ class DataService {
                 window.location.reload();
             };
         }, (error) => {
-            errorHandler(error);
+            if(!errorHandler) {
+                console.log("Handler not provided");
+            } else {
+                errorHandler(error);
+            }
         });
     }
 
@@ -66,7 +74,11 @@ class DataService {
             postsHandler(listOfPosts);
 
         }, (error) => {
-            errorHandler(error);
+            if(!errorHandler) {
+                console.log("Handler not provided");
+            } else {
+                errorHandler(error);
+            }
         });
     }
 }
