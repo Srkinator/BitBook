@@ -13,6 +13,8 @@ const imgStyle = {
     padding: "10px",
     border: "1px solid rgba(178,215,251,0.2)",
     boxShadow: "-12px 11px 34px -1px rgba(44,62,80,0.34)"
+
+
 };
 
 const cardStyle = {
@@ -39,6 +41,7 @@ const modalStyle = {
         maxWidth: "80%",
         margin: "0 auto"
     }
+
 };
 
 const modalCardStyle = {
@@ -193,27 +196,12 @@ class UserProfile extends Component {
                 error: error.response.status
             });
         });
+
     }
 
     displayModal() {
         return (
-            <div className="container">
-                <div className="row">
-                    <div className="mx-auto col-6">
-                        <div className="card" style={cardStyle}>
-                            <img src={this.state.avatar} className="card-img-top" style={imgStyle} />
-                            <div className="card-block">
-                                <h2 className="card-title profileName ">{this.state.name}</h2>
-                                <input type="button" id="editProfileData" onClick={this.openModal} value="Edit Profile" className="btn btn-info btn-lg loginProfileButton " style={loginStyle} />
-                                <p className="card-text">{this.state.aboutShort}</p>
-                                <p className="card-text">{this.state.about}</p>
-                                <button className="btn btn-success btn-lg profileButton">Posts: {this.state.posts}</button>
-                                <button className="btn btn-success btn-lg profileButton">Comments:  {this.state.comments}</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+            <div>
                 <Modal
                     isOpen={this.state.modalIsOpen}
                     onRequestClose={this.closeModal}
@@ -233,7 +221,7 @@ class UserProfile extends Component {
                                     <input type="text" value={this.state.name} onChange={this.collectFieldValue} name="name" placeholder="Please enter a new name" className="updateProfileForm form-control form-control-lg" required />
                                     <input type="email" value={this.state.email} onChange={this.collectFieldValue} name="email" placeholder={`Current email: ${this.state.email}`} className="updateProfileForm form-control form-control-lg" required />
                                     <input type="text" value={this.state.aboutShort} onChange={this.collectFieldValue} name="aboutShort" placeholder="Please enter a short description" className="updateProfileForm form-control form-control-lg" required />
-                                    <input type="text" value={this.state.avatarUrl} onChange={this.collectFieldValue} name="avatarUrl" placeholder="Please enter new avatar url" className="updateProfileForm form-control form-control-lg" required />
+                                    <input type="text" value={this.state.avatarUrl} onChange={this.collectFieldValue} name="avatar" placeholder="Please enter new avatar url" className="updateProfileForm form-control form-control-lg" required />
                                 </div>
                                 <textarea value={this.state.about} onChange={this.collectFieldValue} name="about" placeholder="Please tell us something about yourself" rows="5" className="updateProfileForm form-control" required></textarea>
                                 <input type="button" value="Update" onClick={this.updateProfile} className="updateProfileUpdateButton btn btn-info btn-lg" style={updateButtonStyle} />

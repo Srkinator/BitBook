@@ -101,7 +101,7 @@ class People extends Component {
                                 <div className="card" style={cardStyle}>
                                     <img className="card-img-top userImg" style={imgStyle} src={this.getImg(user.avatarUrl)} alt="Card image cap" />
                                     <div className="card-body ">
-                                        <Link to={`people/${user.id}`} className="peopleCardBody">
+                                        <Link to={`profile/${user.id}`} className="peopleCardBody">
                                             <h4 className="card-title">{user.name}</h4>
                                         </Link>
                                         <p>{user.aboutShort}</p>
