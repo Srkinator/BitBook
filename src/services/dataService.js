@@ -19,7 +19,6 @@ class DataService {
         this.communication.getRequest("users", (response) => {
             let userInfo = response.data;
             let listOfUsers = [];
-            // console.log(userInfo);
             userInfo.forEach((user) =>{
                 const newUser = new User(user);
                 listOfUsers.push(newUser);

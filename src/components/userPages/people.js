@@ -68,7 +68,6 @@ class People extends Component {
     }
 
     render() {
-        console.log(this.state.matchedUsers);
 
         return (
             <div>

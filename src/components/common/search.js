@@ -39,8 +39,8 @@ class Search extends Component {
 }
 
 Search.propTypes = {
-    dispatch: PropTypes.function,
-    filterResults: PropTypes.function
+    dispatch: PropTypes.func,
+    filterResults: PropTypes.func
 };
 
 export default Search;

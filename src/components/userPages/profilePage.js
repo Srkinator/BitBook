@@ -58,12 +58,12 @@ class UserProfile extends Component {
     initBind() {
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
-        this.collectNewAbout = this.collectNewAbout.bind(this);
-        this.collectNewName = this.collectNewName.bind(this);
         this.updateProfile = this.updateProfile.bind(this);
-        this.collectNewAboutShort = this.collectNewAboutShort.bind(this);
-        this.collectNewEmail = this.collectNewEmail.bind(this);
-        this.collectNewAvatarUrl = this.collectNewAvatarUrl.bind(this);
+        this.collectFieldValue = this.collectFieldValue.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps){
+        console.log(nextProps);
     }
 
     componentDidMount() {
@@ -88,43 +88,12 @@ class UserProfile extends Component {
         this.setState({ modalIsOpen: false });
     }
 
-    collectNewName(e) {
-        const newName = e.target.value;
+    collectFieldValue(e) {
+        const value = e.target.value;
+        const fieldName = e.target.name;
 
         this.setState({
-            newName
-        });
-    }
-
-    collectNewAbout(e) {
-        const newAbout = e.target.value;
-
-        this.setState({
-            newAbout
-        });
-    }
-
-    collectNewEmail(e) {
-        const newEmail = e.target.value;
-
-        this.setState({
-            newEmail
-        });
-    }
-
-    collectNewAboutShort(e) {
-        const newAboutShort = e.target.value;
-
-        this.setState({
-            newAboutShort
-        });
-    }
-
-    collectNewAvatarUrl(e) {
-        const newAvatarUrl = e.target.value;
-
-        this.setState({
-            newAvatarUrl
+            [fieldName]: value
         });
     }
 
@@ -191,15 +160,15 @@ class UserProfile extends Component {
                     <h2>Update Profile</h2>
                     <form>
                         <div>
-                            <input type="text" value={this.state.newName} onChange={this.collectNewName} placeholder="Please enter a new name" />
-                            <input type="text" value={this.state.newEmail} onChange={this.collectNewEmail} placeholder={`Current email: ${this.state.email}`} />
-                            <input type="text" value={this.state.newAboutShort} onChange={this.collectNewAboutShort} placeholder="Please enter a short description" />
-                            <input type="text" value={this.state.newAvatarUrl} onChange={this.collectNewAvatarUrl} placeholder="Please enter new avatar url" />
+                            <input type="text" value={this.state.name} onChange={this.collectFieldValue} name="name" placeholder="Please enter a new name" required />
+                            <input type="text" value={this.state.email} onChange={this.collectFieldValue} name="email" placeholder={`Current email: ${this.state.email}`} required  />
+                            <input type="text" value={this.state.aboutShort} onChange={this.collectFieldValue} name="aboutShort" placeholder="Please enter a short description" required  />
+                            <input type="text" value={this.state.avatarUrl} onChange={this.collectFieldValue} name="avatarUrl" placeholder="Please enter new avatar url" required  />
                         </div>
-                        <textarea value={this.state.newAbout} onChange={this.collectNewAbout} placeholder="Please tell us something about yourself" rows="5"></textarea>
+                        <textarea value={this.state.about} onChange={this.collectFieldValue} name="about" placeholder="Please tell us something about yourself" rows="5" required ></textarea>
                         <input type="button" value="Update" onClick={this.updateProfile} />
                         <input type="button" value="Close" onClick={this.closeModal} />
-                        <p>{this.state.isThereError ? this.state.error : ""}</p>
+                        <p>{this.state.isThereError ? `Error ${this.state.error}: All inputs must be filled` : ""}</p>
                     </form>
                 </Modal>
             </div>
