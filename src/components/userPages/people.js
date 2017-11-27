@@ -59,7 +59,10 @@ class People extends Component {
         let matchedUsers = [];
 
         matchedUsers = users.filter((user) => {
-            return user.name.includes(searchedString);
+            let userName = user.name.toLowerCase();
+            let searchString = searchedString.toLowerCase();
+
+            return userName.includes(searchString);
         });
 
         this.setState({

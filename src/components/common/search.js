@@ -12,7 +12,7 @@ class Search extends Component {
         this.searchValue = this.searchValue.bind(this);
         this.handleSearchRequest = this.handleSearchRequest.bind(this);
     }
-
+    
     searchValue(event) {
         this.setState({
             searchString: event.target.value
@@ -31,8 +31,7 @@ class Search extends Component {
     render() {
         return (
             <div>
-                <input type="text" value={this.state.searchString} onChange={this.searchValue} />
-                <input type="button" value="Search" onClick={this.handleSearchRequest} />
+                <input type="text" value={this.state.searchString} onChange={this.searchValue} placeholder = "Search users"/>
             </div>
         );
     }
