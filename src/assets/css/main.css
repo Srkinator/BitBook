@@ -4,7 +4,7 @@ html {
 }
 
 .bg {
-       background-image: url("https://wallpaperlayer.com/img/2015/6/gaussian-blur-wallpaper-3225-3429-hd-wallpapers.jpg");
+        background-image: url("https://cdn.pixabay.com/photo/2017/09/06/11/41/clean-2721102_960_720.jpg") ;
         height: 100%; 
    
         background-repeat: no-repeat;
@@ -116,3 +116,10 @@ html {
 .peopleCardBody:hover {
     color: rgb(49, 103, 151);
 }
+
+.feedUpdateButton {
+    width: 70px;
+ 
+}
+
+
