@@ -1,10 +1,8 @@
 
 class RedirectionService {
 
-
     redirect(url){
-        window.location.assign(`/#/${url}`);
-        
+        window.location.assign(`/#/${url}`); 
     }
 }
 

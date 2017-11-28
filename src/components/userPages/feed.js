@@ -1,9 +1,15 @@
 import React, { Component } from "react";
 import Modal from "react-modal";
+import { Switch, Route, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import DataService from "../../services/dataService";
 import RedirectionService from "../../services/redirectionService";
 import CommunicationService from "../../services/communicationService";
+import TextPost from "../createPost/textPost";
+import ImagePost from "../createPost/imagePost";
+import VideoPost from "../createPost/videoPost";
+import SinglePostInfo from "../userPages/singlePostInfo";
 
 const modalStyle = {
     content: {
@@ -40,12 +46,35 @@ const cardStyle = {
     boxShadow: "-12px 11px 34px -1px rgba(44,62,80,0.34)"
 };
 
+const formStyle = {
+    fontSize: "1.5em",
+    padding: "5px",
+    float: "left",
+    borderRadius: "5px",
+    width: "50%",
+    height: "50px",
+    textAlign: "center",
+    margin: "10px 0",
+    color: "rgba(46, 79, 96, 0.7)"
+};
+
+const createButtonStyle = {
+    transition: "width 0.5s",
+    transitionTimingFunction: "linear",
+    width: "3.5%",
+    borderRadius: "50%",
+    position: "fixed",
+    bottom: "25px",
+    right: "25px"
+};
+
 class Feed extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            posts: []
+            posts: [],
+            textPosts: []
         };
 
         this.bindInit();
@@ -56,15 +85,21 @@ class Feed extends Component {
     }
 
     bindInit() {
-        this.openTextModal = this.openTextModal.bind(this);
-        this.closeTextModal = this.closeTextModal.bind(this);
-        this.openImgModal = this.openImgModal.bind(this);
-        this.closeImgModal = this.closeImgModal.bind(this);
-        this.openVideoModal = this.openVideoModal.bind(this);
-        this.closeVideoModal = this.closeVideoModal.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.afterPostAction = this.afterPostAction.bind(this);
+        this.processVideoUrl = this.processVideoUrl.bind(this);
     }
 
+    // componentWillReceiveProps(nextProps){
+    //     console.log(nextProps);
+    // }
+
     componentDidMount() {
+        this.getPosts();
+    }
+
+    getPosts() {
         this.getData.getPosts((posts) => {
             console.log(posts);
             this.setState({
@@ -75,127 +110,125 @@ class Feed extends Component {
         });
     }
 
-    // openCreatePostModal() {
-    //     return (
-
-    //     );
-    // }
-
-    createPost() {
-        this.request.postRequest();
-    }
-
     openModal() {
         this.setState({ modalIsOpen: true });
     }
 
     closeModal() {
         this.setState({ modalIsOpen: false });
+        this.redirect.redirect("feed");
     }
 
-    // openImgModal() {
-    //     this.setState({ imgModalIsOpen: true });
-    // }
+    afterPostAction(post, postTypeName) {
+        let postType;
 
-    // closeImgModal() {
-    //     this.setState({ imgModalIsOpen: false });
-    // }
+        if (postTypeName === "image") {
+            postType = "ImagePosts";
+        } else if (postTypeName === "text") {
+            postType = "TextPosts";
+        } else if (postTypeName === "video") {
+            postType = "VideoPosts";
+        }
 
-    // openVideoModal() {
-    //     this.setState({ videoModalIsOpen: true });
-    // }
+        this.getData.createPost(postType, post, () => {
+            this.closeModal();
+            this.getPosts();
+        }, (error) => {
+            this.setState({
+                error: error.response,
+                isThereError: true
+            });
+        });
+    }
 
-    // closeVideoModal() {
-    //     this.setState({ videoModalIsOpen: false });
-    // }
+    processVideoUrl(video) {
+        const videoEndPart = video.split("=")[1];
+        return (
+            <iframe width="560" height="315" src={`https://www.youtube.com/embed/${videoEndPart}`} frameBorder="0" allowFullScreen></iframe>
+        );
+    }
+
+    showText() {
+        let textPostsArray = [];
+
+        this.state.posts.map((post) => {
+            if (post.type === "text") {
+                textPostsArray.push(post);
+            }
+
+        });
+        this.setState({
+            textPosts: textPostsArray
+        });
+    }
 
     render() {
         return (
             <div className="container-fluid">
                 <div className="row">
+                    <div className="dropdown">
+                        <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Dropdown button
+                        </button>
+                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <p className="dropdown-item" onClick={this.showText} >Text Posts</p>
+                            <p className="dropdown-item" onClick={this.showImages} >Image Posts</p>
+                            <p className="dropdown-item" onClick={this.showVideos} >Video Posts</p>
+                        </div>
+                    </div>
                     {this.state.posts.map((post) => {
                         return (
                             <div key={post.id} className="col-12" style={cardStyle}>
-                                <h2>{post.userDisplayName}</h2>
-                                <h4>{post.text}</h4>
-                                <h6>{post.dateCreated}</h6>
+                                <Link to={`/${post.type}/${post.id}`} >
+                                    <h2>{post.userDisplayName}</h2>
+                                </Link>
+                                {post.text ? <p>{post.text}</p> : post.imageUrl ? <img src={post.imageUrl} /> : post.videoUrl ? this.processVideoUrl(post.videoUrl) : "no content detected"}
+                                <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
+                                <p>{post.type} post</p>
                             </div>
                         );
-                    })}
+                    }
+                    )}
                 </div>
-                <input type="button" name="createTextPost" value="Create a Text Post" onClick={this.openTextModal} />
-                <input type="button" name="createImgPost" value="Create a Image Post" onClick={this.openImgModal} />
-                <input type="button" name="createVideoPost" value="Create a Video Post" onClick={this.openVideoModal} />
+
+                <input type="button" className="updateProfileUpdateButton btn btn-info btn-lg" name="createPost" value="+" onClick={this.openModal} style={createButtonStyle} />
 
 
                 <Modal
-                    isOpen={this.state.textModalIsOpen}
-                    onRequestClose={this.closeTextModal}
-                    contentLabel="Example Modal"
+                    isOpen={this.state.modalIsOpen}
+                    onRequestClose={this.closeModal}
+                    contentLabel="Sample"
                     style={modalStyle}
                 >
                     <nav className="navbar navbar-expand-lg navbar-light modalNavColor">
-                        <h2 className="updateProfileHeading">Write a Post</h2>
+                        <h2 className="updateProfileHeading"></h2>
                     </nav>
                     <div className="row">
                         <div className="col-2">
                         </div>
                         <div className="col" style={modalCardStyle} >
                             <form>
-                                <input type="button" value="Close" onClick={this.closeTextModal} className="updateProfileCloseButton btn btn-success btn-lg" style={updateButtonStyle} />
-                                <textarea value={this.state.about} onChange={this.collectFieldValue} name="about" placeholder="Please enter the text of your post" rows="5" className="updateProfileForm form-control" required></textarea>
-                                <input type="button" value="Post" onClick={this.createTextPost} className="updateProfileUpdateButton btn btn-info btn-lg" style={updateButtonStyle} />
-                                <p>{this.state.isThereError ? `Error ${this.state.error}: Please enter the text of your post` : ""}</p>
-                            </form>
-                        </div>
-                        <div className="col-2">
-                        </div>
-                    </div>
-                </Modal>
-
-                <Modal
-                    isOpen={this.state.imgModalIsOpen}
-                    onRequestClose={this.closeImgModal}
-                    contentLabel="Example Modal"
-                    style={modalStyle}
-                >
-                    <nav className="navbar navbar-expand-lg navbar-light modalNavColor">
-                        <h2 className="updateProfileHeading">Write a Post</h2>
-                    </nav>
-                    <div className="row">
-                        <div className="col-2">
-                        </div>
-                        <div className="col" style={modalCardStyle} >
-                            <form>
-                                <input type="button" value="Close" onClick={this.closeImgModal} className="updateProfileCloseButton btn btn-success btn-lg" style={updateButtonStyle} />
-                                <textarea value={this.state.about} onChange={this.collectFieldValue} name="about" placeholder="Please enter the text of your post" rows="5" className="updateProfileForm form-control" required></textarea>
-                                <input type="button" value="Post" onClick={this.createTextPost} className="updateProfileUpdateButton btn btn-info btn-lg" style={updateButtonStyle} />
-                                <p>{this.state.isThereError ? `Error ${this.state.error}: Please enter the text of your post` : ""}</p>
-                            </form>
-                        </div>
-                        <div className="col-2">
-                        </div>
-                    </div>
-                </Modal>
-
-                <Modal
-                    isOpen={this.state.videoModalIsOpen}
-                    onRequestClose={this.closeVideoModal}
-                    contentLabel="Example Modal"
-                    style={modalStyle}
-                >
-                    <nav className="navbar navbar-expand-lg navbar-light modalNavColor">
-                        <h2 className="updateProfileHeading">Write a Post</h2>
-                    </nav>
-                    <div className="row">
-                        <div className="col-2">
-                        </div>
-                        <div className="col" style={modalCardStyle} >
-                            <form>
-                                <input type="button" value="Close" onClick={this.closeVideoModal} className="updateProfileCloseButton btn btn-success btn-lg" style={updateButtonStyle} />
-                                <textarea value={this.state.about} onChange={this.collectFieldValue} name="about" placeholder="Please enter the text of your post" rows="5" className="updateProfileForm form-control" required></textarea>
-                                <input type="button" value="Post" onClick={this.createTextPost} className="updateProfileUpdateButton btn btn-info btn-lg" style={updateButtonStyle} />
-                                <p>{this.state.isThereError ? `Error ${this.state.error}: Please enter the text of your post` : ""}</p>
+                                <input type="button" value="Close" onClick={this.closeModal} className="updateProfileCloseButton btn btn-success btn-lg" style={updateButtonStyle} />
+                                <div>
+                                    <Redirect from="/feed" to="/feed/text" />
+                                    <Link to="/feed/text"><h3 style={formStyle}>Create a Text Post</h3></Link>
+                                    <Link to="/feed/image"><h3 style={formStyle}>Create an Image Post</h3></Link>
+                                    <Link to="/feed/video"><h3 style={formStyle}>Create a Video Post</h3></Link>
+                                </div>
+                                <Switch>
+                                    <Route
+                                        path="/feed/text"
+                                        render={() => (<TextPost onPostCreate={this.afterPostAction} />)}
+                                    />
+                                    <Route
+                                        path="/feed/image"
+                                        render={() => (<ImagePost onPostCreate={this.afterPostAction} />)}
+                                    />
+                                    <Route
+                                        path="/feed/video"
+                                        render={() => (<VideoPost onPostCreate={this.afterPostAction} />)}
+                                    />
+                                </Switch>
                             </form>
                         </div>
                         <div className="col-2">
@@ -203,7 +236,6 @@ class Feed extends Component {
                     </div>
                 </Modal>
             </div>
-
         );
     }
 }

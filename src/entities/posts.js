@@ -5,5 +5,8 @@ export default class Post {
         this.dateCreated = data.dateCreated;
         this.userId = data.userId;
         this.userDisplayName = data.userDisplayName;
+        this.imageUrl = data.imageUrl;
+        this.videoUrl = data.videoUrl;
+        this.type = data.type;
     }
 }

@@ -32,6 +32,7 @@ class CommunicationService {
                 notifyPostRequest(response);
             })
             .catch(error => {
+                console.log(error);
                 let errorMsg = error.response ? error.response.code : "Server unavailable";
                 handleError(errorMsg);
             });

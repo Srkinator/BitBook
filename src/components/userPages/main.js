@@ -5,6 +5,7 @@ import Header from "../common/header";
 import UserProfile from "./profilePage";
 import People from "./people";
 import Feed from "./feed";
+import SinglePostInfo from "./singlePostInfo";
 
 class Main extends Component {
     constructor(props) {
@@ -19,6 +20,7 @@ class Main extends Component {
                     <Route path="/profile/:id" component={UserProfile} />
                     <Route exact path="/people" component={People} />
                     <Route path="/feed" component={Feed} />
+                    <Route path= "/:type/:id" component={SinglePostInfo}/>
                 </Switch>
             </div>
         );

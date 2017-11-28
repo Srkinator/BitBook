@@ -22,7 +22,7 @@ class DataService {
             datahandler(response);
 
         }, (error) => {
-            if(!errorHandler) {
+            if (!errorHandler) {
                 console.log("Handler not provided");
             } else {
                 errorHandler(error);
@@ -40,8 +40,8 @@ class DataService {
             });
 
             userDataHandler(listOfUsers);
-        }, (error) =>{
-            if(!errorHandler){
+        }, (error) => {
+            if (!errorHandler) {
                 console.warn("Handler not provided");
             } else {
                 errorHandler(error);
@@ -49,13 +49,13 @@ class DataService {
         });
     }
 
-    updateProfileData(newData, errorHandler){
-        this.communication.putRequest("Profiles", newData, (response) =>{
-            if(response.status >= 200 && response.status < 400) {
+    updateProfileData(newData, errorHandler) {
+        this.communication.putRequest("Profiles", newData, (response) => {
+            if (response.status >= 200 && response.status < 400) {
                 window.location.reload();
             };
         }, (error) => {
-            if(!errorHandler) {
+            if (!errorHandler) {
                 console.log("Handler not provided");
             } else {
                 errorHandler(error);
@@ -74,12 +74,36 @@ class DataService {
             postsHandler(listOfPosts);
 
         }, (error) => {
-            if(!errorHandler) {
+            if (!errorHandler) {
                 console.log("Handler not provided");
             } else {
                 errorHandler(error);
             }
         });
+    }
+
+    createPost(postType, textPostContent, successHandler, errorHandler) {
+        this.communication.postRequest(
+            postType,
+            textPostContent,
+            (response) => {
+                successHandler(response.data);
+            }, 
+            (error) => {
+                errorHandler(error);
+            });
+    }
+
+    getSinglePost(postType, notifySinglePost, errorHandler){
+        this.communication.getRequest(
+            postType,
+            (response) => {
+                notifySinglePost(response.data);
+            },
+            (error) => {
+                errorHandler(error);
+            }
+        );
     }
 }
 
