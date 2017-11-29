@@ -11,10 +11,11 @@ import ImagePost from "../createPost/imagePost";
 import VideoPost from "../createPost/videoPost";
 import SinglePostInfo from "../userPages/singlePostInfo";
 
+const rowStyle = {
+    maxHeight: "200px"
+};
+
 const videoStyle = {
-
-
-
     padding: "10px",
     border: "1px solid rgba(178,215,251,0.2)",
     boxShadow: "-12px 11px 34px -1px rgba(44,62,80,0.34)"
@@ -50,15 +51,14 @@ const modalCardStyle = {
 const updateButtonStyle = {
     transition: "width 0.5s",
     transitionTimingFunction: "linear",
-   
+
 };
 
 const closeButtonStyle = {
     transition: "width 0.5s",
     transitionTimingFunction: "linear",
-    position: "absolute",
-    right: "25px"
    
+
 };
 
 const dropdownStyle = {
@@ -77,20 +77,21 @@ const cardStyle = {
     borderRadius: "2em",
     backgroundColor: "rgba(116, 162, 208, 0.2)",
     boxShadow: "-12px 11px 34px -1px rgba(44,62,80,0.34)",
-   
+
 };
 
 const formStyle = {
     fontWeight: "bold",
     padding: "5px",
     borderRadius: "5px",
-    width: "25%",
+    width: "90%",
     height: "50px",
     textAlign: "center",
     margin: "90px 10px 20px 0",
     color: "rgba(255, 255, 255, 0.9)",
-    float: "left"
     
+
+
 };
 
 const createButtonStyle = {
@@ -102,7 +103,7 @@ const createButtonStyle = {
     bottom: "25px",
     right: "25px",
     height: "70px",
-    
+
 };
 
 class Feed extends Component {
@@ -222,7 +223,7 @@ class Feed extends Component {
                     {this.state.posts.map((post) => {
                         return (
 
-                            <div key={post.id} className="col-12 col-xl-8 offset-xl-2" style={{paddingBottom: "60px"}}>
+                            <div key={post.id} className="col-12 col-xl-8 offset-xl-2" style={{ paddingBottom: "60px" }}>
                                 <div style={cardStyle} >
                                     <Link to={`/${post.type}/${post.id}`} >
                                         <h2>{post.userDisplayName}</h2>
@@ -255,11 +256,19 @@ class Feed extends Component {
                         <div className="col" style={modalCardStyle} >
                             <form>
                                 <input type="button" value="Close" onClick={this.closeModal} className="updateProfileCloseButton btn btn-success btn-lg" style={closeButtonStyle} />
-                                <div >
+                                <div className="row" >
                                     <Redirect from="/feed" to="/feed/text" />
-                                    <Link to="/feed/text"><button className="btn  btn-info feedModalButton" style={formStyle}>Text Post</button></Link>
-                                    <Link to="/feed/image"><button className="btn  btn-info feedModalButton" style={formStyle}>Image Post</button></Link>
-                                    <Link to="/feed/video"><button className="btn  btn-info feedModalButton" style={formStyle}>Video Post</button></Link>
+                                    <div  className="col-12 col-md-4 col-lg-4">
+                                        <Link to="/feed/text"><button className="btn  btn-info feedModalButton " style={formStyle}>Text Post</button></Link>
+                                    </div>
+
+                                    <div className="col-12 col-md-4 col-lg-4">
+                                        <Link to="/feed/image"><button className="btn  btn-info feedModalButton " style={formStyle}>Image Post</button></Link>
+                                    </div>
+
+                                    <div className="col-12 col-md-4 col-lg-4">
+                                        <Link to="/feed/video"><button className="btn  btn-info feedModalButton " style={formStyle}>Video Post</button></Link>
+                                    </div>
                                 </div>
                                 <Switch>
                                     <Route
