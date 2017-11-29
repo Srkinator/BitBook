@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
 import DataService from "../../services/dataService";
-import RedirectionService from "../../services/redirectionService";
 
 const updateButtonStyle = {
     transition: "width 0.5s",
@@ -13,7 +12,6 @@ class TextPost extends Component {
         super(props);
 
         this.dataService = new DataService();
-        this.redirect = new RedirectionService();
 
         this.state = {
             textPostContent: ""
@@ -44,7 +42,6 @@ class TextPost extends Component {
     }
 
     render() {
-        console.log("ovde");
         return (
             <div>
                 <textarea placeholder="This is a text post" rows="5" className="updateProfileForm form-control" onChange={this.getTextPost} required></textarea>

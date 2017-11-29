@@ -12,9 +12,9 @@ import VideoPost from "../createPost/videoPost";
 import SinglePostInfo from "../userPages/singlePostInfo";
 
 const videoStyle = {
-    
-   
-   
+
+
+
     padding: "10px",
     border: "1px solid rgba(178,215,251,0.2)",
     boxShadow: "-12px 11px 34px -1px rgba(44,62,80,0.34)"
@@ -61,8 +61,8 @@ const dropdownStyle = {
     padding: "20px",
     margin: "10px 0 0 0",
     textAlign: "center",
- 
-    
+
+
 };
 
 const cardStyle = {
@@ -105,7 +105,12 @@ class Feed extends Component {
 
         this.state = {
             posts: [],
-            textPosts: []
+            textPosts: [],
+            imagePosts: [],
+            videoPosts: [],
+            isTextFilterOn: false,
+            isImageFilterOn: false,
+            isVideoFilterOn: false
         };
 
         this.bindInit();
@@ -120,11 +125,15 @@ class Feed extends Component {
         this.closeModal = this.closeModal.bind(this);
         this.afterPostAction = this.afterPostAction.bind(this);
         this.processVideoUrl = this.processVideoUrl.bind(this);
+        this.filterTextPosts = this.filterTextPosts.bind(this);
+        this.filterImagePosts = this.filterImagePosts.bind(this);
+        this.filterVideoPosts = this.filterVideoPosts.bind(this);
+        this.showAllPosts = this.showAllPosts.bind(this);
+        this.showTextPosts = this.showTextPosts.bind(this);
+        this.showImagePosts = this.showImagePosts.bind(this);
+        this.showVideoPosts = this.showVideoPosts.bind(this);
+        this.filterAllPosts = this.filterAllPosts.bind(this);
     }
-
-    // componentWillReceiveProps(nextProps){
-    //     console.log(nextProps);
-    // }
 
     componentDidMount() {
         this.getPosts();
@@ -132,7 +141,6 @@ class Feed extends Component {
 
     getPosts() {
         this.getData.getPosts((posts) => {
-            console.log(posts);
             this.setState({
                 posts
             });
@@ -175,11 +183,93 @@ class Feed extends Component {
     processVideoUrl(video) {
         const videoEndPart = video.split("=")[1];
         return (
-            <iframe width="90%"  height="315" style={videoStyle} src={`https://www.youtube.com/embed/${videoEndPart}`} frameBorder="0" allowFullScreen></iframe>
+            <iframe width="90%" height="315" style={videoStyle} src={`https://www.youtube.com/embed/${videoEndPart}`} frameBorder="0" allowFullScreen></iframe>
         );
     }
 
-    showText() {
+    showAllPosts() {
+        return (
+            this.state.posts.map((post) => {
+                return (
+                    <div key={post.id} className="col-8 mx-auto" style={cardStyle}>
+                        <Link to={`/${post.type}/${post.id}`} >
+                            <h2>{post.userDisplayName}</h2>
+                        </Link>
+                        {this.getConcretePostTypeComponent(post)}
+                        <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
+                        <p>{post.type} post</p>
+                    </div>
+                );
+            }
+            )
+        );
+    }
+
+    showTextPosts() {
+        return (
+            this.state.textPosts.map((post) => {
+                return (
+                    <div key={post.id} className="col-8 mx-auto" style={cardStyle}>
+                        <Link to={`/${post.type}/${post.id}`} >
+                            <h2>{post.userDisplayName}</h2>
+                        </Link>
+                        {this.getConcretePostTypeComponent(post)}
+                        <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
+                        <p>{post.type} post</p>
+                    </div>
+                );
+            }
+            )
+        );
+    }
+
+    showImagePosts() {
+        return (
+            this.state.imagePosts.map((post) => {
+                return (
+                    <div key={post.id} className="col-8 mx-auto" style={cardStyle}>
+                        <Link to={`/${post.type}/${post.id}`} >
+                            <h2>{post.userDisplayName}</h2>
+                        </Link>
+                        {this.getConcretePostTypeComponent(post)}
+                        <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
+                        <p>{post.type} post</p>
+                    </div>
+                );
+            }
+            )
+        );
+    }
+
+    showVideoPosts() {
+        return (
+            this.state.videoPosts.map((post) => {
+                return (
+                    <div key={post.id} className="col-8 mx-auto" style={cardStyle}>
+                        <Link to={`/${post.type}/${post.id}`} >
+                            <h2>{post.userDisplayName}</h2>
+                        </Link>
+                        {this.getConcretePostTypeComponent(post)}
+                        <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
+                        <p>{post.type} post</p>
+                    </div>
+                );
+            }
+            )
+        );
+    }
+
+    filterAllPosts() {
+        this.setState({
+            isTextFilterOn: false,
+            isImageFilterOn: false,
+            isVideoFilterOn: false,
+        });
+
+        this.showAllPosts();
+    }
+
+    filterTextPosts() {
         let textPostsArray = [];
 
         this.state.posts.map((post) => {
@@ -189,44 +279,94 @@ class Feed extends Component {
 
         });
         this.setState({
-            textPosts: textPostsArray
+            textPosts: textPostsArray,
+            isTextFilterOn: true,
+            isImageFilterOn: false,
+            isVideoFilterOn: false
         });
+    }
+
+    filterImagePosts() {
+        let imagePostsArray = [];
+
+        this.state.posts.map((post) => {
+            if (post.type === "image") {
+                imagePostsArray.push(post);
+            }
+
+        });
+        this.setState({
+            imagePosts: imagePostsArray,
+            isImageFilterOn: true,
+            isTextFilterOn: false,
+            isVideoFilterOn: false
+        });
+    }
+
+    filterVideoPosts() {
+        let videoPostsArray = [];
+
+        this.state.posts.map((post) => {
+            if (post.type === "video") {
+                videoPostsArray.push(post);
+            }
+
+        });
+        this.setState({
+            videoPosts: videoPostsArray,
+            isVideoFilterOn: true,
+            isTextFilterOn: false,
+            isImageFilterOn: false
+        });
+    }
+
+    getConcretePostTypeComponent(post) {
+        if (post.type === "text") {
+            return <p>{post.text}</p>;
+        }
+
+        if (post.type === "image") {
+            return <img src={post.imageUrl} style={imgStyle} />;
+        }
+
+        return this.processVideoUrl(post.videoUrl);
+    }
+
+    renderPosts() {
+        if(this.state.isTextFilterOn) {
+            return this.showTextPosts();
+        }
+        
+        if(this.state.isImageFilterOn) {
+            return this.showImagePosts();
+        }
+         
+        if(this.state.isVideoFilterOn) {
+            return this.showVideoPosts();
+        }
+        
+        return this.showAllPosts();
     }
 
     render() {
         return (
             <div className="container-fluid">
-
-
                 <div className="row">
-
                     <div className=" col-8 dropdown mx-auto" style={dropdownStyle} >
                         <button className="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  >
                             Dropdown button
                         </button>
                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <p className="dropdown-item" onClick={this.showText} >Text Posts</p>
-                            <p className="dropdown-item" onClick={this.showImages} >Image Posts</p>
-                            <p className="dropdown-item" onClick={this.showVideos} >Video Posts</p>
+                            <p className="dropdown-item" onClick={this.filterAllPosts} name="text">All Posts</p>
+                            <p className="dropdown-item" onClick={this.filterTextPosts} name="text">Text Posts</p>
+                            <p className="dropdown-item" onClick={this.filterImagePosts} name="image">Image Posts</p>
+                            <p className="dropdown-item" onClick={this.filterVideoPosts} name="video">Video Posts</p>
                         </div>
                     </div>
-                    {this.state.posts.map((post) => {
-                        return (
-                            <div key={post.id} className="col-8 mx-auto" style={cardStyle}>
-                                <Link to={`/${post.type}/${post.id}`} >
-                                    <h2>{post.userDisplayName}</h2>
-                                </Link>
-                                {post.text ? <p>{post.text}</p> : post.imageUrl ? <img src={post.imageUrl}  style={imgStyle}/> : post.videoUrl ? this.processVideoUrl(post.videoUrl) : "no content detected"}
-                                <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
-                                <p>{post.type} post</p>
-                            </div>
-                        );
-                    }
-                    )}
+                    {this.renderPosts()}
                 </div>
 
                 <input type="button" className="feedUpdateButton btn btn-info btn-lg" name="createPost" value="+" onClick={this.openModal} style={createButtonStyle} />
-
 
                 <Modal
                     isOpen={this.state.modalIsOpen}

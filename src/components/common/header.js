@@ -21,7 +21,7 @@ class Header extends Component {
         return (
             <div>
                 <nav className="navbar navbar-expand-lg navbar-dark navColor ">
-                    <Link to="feed">
+                    <Link to="/feed">
                         <p className="navbar-brand" style={{ fontSize: "1.7em", fontWeight: "bold", paddingLeft: "15px", paddingTop: "10px" }}>BitBook</p>
                     </Link>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">

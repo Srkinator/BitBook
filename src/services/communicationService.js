@@ -68,6 +68,16 @@ class CommunicationService {
                 handleError(errorMsg);
             });
     }
+
+    deleteRequest(id, deleteHandler, errorHandler) {
+        const requestURL = `${BASE_URL}/Posts/${id}`;
+        
+        axios.delete(requestURL, {
+            headers: this.createHeaders()
+        })
+            .then(response => deleteHandler(response))
+            .catch(error => errorHandler(error));
+    }
 }
 
 export default CommunicationService;

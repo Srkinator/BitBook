@@ -20,7 +20,6 @@ class DataService {
         this.communication.getRequest(`users/${userId}`, (response) => {
             const profile = new Profile(response.data);
             datahandler(response);
-
         }, (error) => {
             if (!errorHandler) {
                 console.log("Handler not provided");
@@ -104,6 +103,14 @@ class DataService {
                 errorHandler(error);
             }
         );
+    }
+
+    deletePost(id, successHandler, errorHandler) {
+        this.communication.deleteRequest(id, (serverResponseData) => {
+            successHandler(serverResponseData);
+        }, (serverErrorObject) => {
+            errorHandler(serverErrorObject);
+        });
     }
 }
 

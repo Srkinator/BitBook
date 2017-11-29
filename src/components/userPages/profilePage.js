@@ -114,7 +114,6 @@ class UserProfile extends Component {
     getOtherProfile(id) {
 
         this.getData.getSingleUserData((user) => {
-            console.log(user);
             this.setState({
                 name: user.data.name,
                 avatar: user.data.avatarUrl,

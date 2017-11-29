@@ -7,5 +7,6 @@ export default class Profile {
         this.commentsCount = data.commentsCount;
         this.postsCount = data.postsCount;
         this.email = data.email;
+        this.userId = data.userId;
     }
 }
