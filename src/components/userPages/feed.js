@@ -12,9 +12,9 @@ import VideoPost from "../createPost/videoPost";
 import SinglePostInfo from "../userPages/singlePostInfo";
 
 const videoStyle = {
-    
-   
-   
+
+
+
     padding: "10px",
     border: "1px solid rgba(178,215,251,0.2)",
     boxShadow: "-12px 11px 34px -1px rgba(44,62,80,0.34)"
@@ -27,8 +27,6 @@ const imgStyle = {
     padding: "10px",
     border: "1px solid rgba(178,215,251,0.2)",
     boxShadow: "-12px 11px 34px -1px rgba(44,62,80,0.34)"
-
-
 };
 
 const modalStyle = {
@@ -51,7 +49,8 @@ const modalCardStyle = {
 
 const updateButtonStyle = {
     transition: "width 0.5s",
-    transitionTimingFunction: "linear"
+    transitionTimingFunction: "linear",
+    
 };
 
 const dropdownStyle = {
@@ -61,19 +60,16 @@ const dropdownStyle = {
     padding: "20px",
     margin: "10px 0 0 0",
     textAlign: "center",
- 
-    
+
+
 };
 
 const cardStyle = {
-    width: "85%",
-    height: "95%",
-    padding: "20px",
-    margin: "40px 0",
     textAlign: "center",
-    borderRadius: "20%",
+    borderRadius: "2em",
     backgroundColor: "rgba(116, 162, 208, 0.2)",
-    boxShadow: "-12px 11px 34px -1px rgba(44,62,80,0.34)"
+    boxShadow: "-12px 11px 34px -1px rgba(44,62,80,0.34)",
+   
 };
 
 const formStyle = {
@@ -96,7 +92,8 @@ const createButtonStyle = {
     position: "fixed",
     bottom: "25px",
     right: "25px",
-    height: "70px"
+    height: "70px",
+    
 };
 
 class Feed extends Component {
@@ -175,7 +172,7 @@ class Feed extends Component {
     processVideoUrl(video) {
         const videoEndPart = video.split("=")[1];
         return (
-            <iframe width="90%"  height="315" style={videoStyle} src={`https://www.youtube.com/embed/${videoEndPart}`} frameBorder="0" allowFullScreen></iframe>
+            <iframe width="90%" height="315" style={videoStyle} src={`https://www.youtube.com/embed/${videoEndPart}`} frameBorder="0" allowFullScreen></iframe>
         );
     }
 
@@ -197,28 +194,34 @@ class Feed extends Component {
         return (
             <div className="container-fluid">
 
-
                 <div className="row">
-
-                    <div className=" col-8 dropdown mx-auto" style={dropdownStyle} >
-                        <button className="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  >
-                            Dropdown button
-                        </button>
-                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <p className="dropdown-item" onClick={this.showText} >Text Posts</p>
-                            <p className="dropdown-item" onClick={this.showImages} >Image Posts</p>
-                            <p className="dropdown-item" onClick={this.showVideos} >Video Posts</p>
+                    <div className="col-12" >
+                        <div className="dropdown" style={{ marginTop: "30px", marginBottom: "10px" }}>
+                            <button className="btn btn-info  dropdown-toggle m-auto ml-xl-0" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{ display: "block" }}  >
+                                Dropdown button
+                            </button>
+                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <p className="dropdown-item" onClick={this.showText} >Text Posts</p>
+                                <p className="dropdown-item" onClick={this.showImages} >Image Posts</p>
+                                <p className="dropdown-item" onClick={this.showVideos} >Video Posts</p>
+                            </div>
                         </div>
                     </div>
+                </div>
+
+                <div className="row" >
                     {this.state.posts.map((post) => {
                         return (
-                            <div key={post.id} className="col-8 mx-auto" style={cardStyle}>
-                                <Link to={`/${post.type}/${post.id}`} >
-                                    <h2>{post.userDisplayName}</h2>
-                                </Link>
-                                {post.text ? <p>{post.text}</p> : post.imageUrl ? <img src={post.imageUrl}  style={imgStyle}/> : post.videoUrl ? this.processVideoUrl(post.videoUrl) : "no content detected"}
-                                <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
-                                <p>{post.type} post</p>
+
+                            <div key={post.id} className="col-12 col-xl-8 offset-xl-2" style={{paddingBottom: "60px"}}>
+                                <div style={cardStyle} >
+                                    <Link to={`/${post.type}/${post.id}`} >
+                                        <h2>{post.userDisplayName}</h2>
+                                    </Link>
+                                    {post.text ? <p>{post.text}</p> : post.imageUrl ? <img src={post.imageUrl} style={imgStyle} /> : post.videoUrl ? this.processVideoUrl(post.videoUrl) : "no content detected"}
+                                    <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
+                                    <p>{post.type} post</p>
+                                </div>
                             </div>
                         );
                     }

@@ -37,7 +37,7 @@ const modalStyle = {
     content: {
         height: "90%",
         overlfow: "scroll",
-        backgroundImage: "url(https://wallpaperlayer.com/img/2015/6/gaussian-blur-wallpaper-3225-3429-hd-wallpapers.jpg)",
+        backgroundImage: "url(../../assets/img/bg.jpg)",
         maxWidth: "80%",
         margin: "0 auto"
     }
