@@ -3,8 +3,12 @@ html {
    
 }
 
+.no-padding {
+    padding: 0 !important;
+}
+
 .bg {
-        background-image: url("https://imjustcreative.com/wp-content/uploads/ImJustCreative-2010-08-23-at-06.49.36.jpg");
+        background-image: url("../img/bg.jpg") ;
         height: 100%; 
         background-repeat: no-repeat;
         background-attachment: fixed;
@@ -67,14 +71,17 @@ html {
    float: right;
    margin-bottom: 30px;
    width: 20%;
+   min-width: 100px;
 }
 
 .updateProfileCloseButton:hover {
     width: 30%;
+   
 }
 
 .updateProfileUpdateButton {
     width: 30%;
+    min-width: 100px;
  
 }
 
@@ -119,6 +126,11 @@ html {
 .feedUpdateButton {
     width: 70px;
  
+}
+
+.feedModalButton {
+    width: 30%;
+    display: inline-block;
 }
 
 

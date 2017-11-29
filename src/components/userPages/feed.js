@@ -11,10 +11,11 @@ import ImagePost from "../createPost/imagePost";
 import VideoPost from "../createPost/videoPost";
 import SinglePostInfo from "../userPages/singlePostInfo";
 
+const rowStyle = {
+    maxHeight: "200px"
+};
+
 const videoStyle = {
-
-
-
     padding: "10px",
     border: "1px solid rgba(178,215,251,0.2)",
     boxShadow: "-12px 11px 34px -1px rgba(44,62,80,0.34)"
@@ -27,14 +28,12 @@ const imgStyle = {
     padding: "10px",
     border: "1px solid rgba(178,215,251,0.2)",
     boxShadow: "-12px 11px 34px -1px rgba(44,62,80,0.34)"
-
-
 };
 
 const modalStyle = {
     content: {
         height: "90%",
-        overlfow: "scroll",
+        overflow: "scroll",
         backgroundImage: "url(https://wallpaperlayer.com/img/2015/6/gaussian-blur-wallpaper-3225-3429-hd-wallpapers.jpg)",
         maxWidth: "80%",
         margin: "0 auto"
@@ -46,46 +45,47 @@ const modalCardStyle = {
     padding: "30px",
     margin: "50px 0",
     borderRadius: "10px 10px 10px 10px",
-    positon: "relative"
+    position: "relative"
 };
 
 const updateButtonStyle = {
     transition: "width 0.5s",
-    transitionTimingFunction: "linear"
+    transitionTimingFunction: "linear",
+
+};
+
+const closeButtonStyle = {
+    transition: "width 0.5s",
+    transitionTimingFunction: "linear",
+
+
 };
 
 const dropdownStyle = {
-
     width: "85%",
     height: "95%",
     padding: "20px",
     margin: "10px 0 0 0",
     textAlign: "center",
-
-
 };
 
 const cardStyle = {
-    width: "85%",
-    height: "95%",
-    padding: "20px",
-    margin: "40px 0",
     textAlign: "center",
-    borderRadius: "20%",
+    borderRadius: "2em",
     backgroundColor: "rgba(116, 162, 208, 0.2)",
-    boxShadow: "-12px 11px 34px -1px rgba(44,62,80,0.34)"
+    boxShadow: "-12px 11px 34px -1px rgba(44,62,80,0.34)",
+
 };
 
 const formStyle = {
-    fontSize: "1.5em",
+    fontWeight: "bold",
     padding: "5px",
-    float: "left",
     borderRadius: "5px",
-    width: "50%",
+    width: "90%",
     height: "50px",
     textAlign: "center",
-    margin: "10px 0",
-    color: "rgba(46, 79, 96, 0.7)"
+    margin: "90px 10px 20px 0",
+    color: "rgba(255, 255, 255, 0.9)",
 };
 
 const createButtonStyle = {
@@ -96,7 +96,7 @@ const createButtonStyle = {
     position: "fixed",
     bottom: "25px",
     right: "25px",
-    height: "70px"
+    height: "70px",
 };
 
 class Feed extends Component {
@@ -189,73 +189,89 @@ class Feed extends Component {
 
     showAllPosts() {
         return (
-            this.state.posts.map((post) => {
-                return (
-                    <div key={post.id} className="col-8 mx-auto" style={cardStyle}>
-                        <Link to={`/${post.type}/${post.id}`} >
-                            <h2>{post.userDisplayName}</h2>
-                        </Link>
-                        {this.getConcretePostTypeComponent(post)}
-                        <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
-                        <p>{post.type} post</p>
-                    </div>
-                );
-            }
-            )
+            <div className="row" >
+                {this.state.posts.map((post) => {
+                    return (
+                        <div key={post.id} className="col-12 col-xl-8 offset-xl-2" style={{ paddingBottom: "60px" }}>
+                            <div style={cardStyle}>
+                                <Link to={`/${post.type}/${post.id}`} >
+                                    <h2>{post.userDisplayName}</h2>
+                                </Link>
+                                {this.getConcretePostTypeComponent(post)}
+                                <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
+                                <p>{post.type} post</p>
+                            </div>
+                        </div>
+                    );
+                }
+                )}
+            </div>
         );
     }
 
     showTextPosts() {
         return (
-            this.state.textPosts.map((post) => {
-                return (
-                    <div key={post.id} className="col-8 mx-auto" style={cardStyle}>
-                        <Link to={`/${post.type}/${post.id}`} >
-                            <h2>{post.userDisplayName}</h2>
-                        </Link>
-                        {this.getConcretePostTypeComponent(post)}
-                        <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
-                        <p>{post.type} post</p>
-                    </div>
-                );
-            }
-            )
+            <div className="row" >
+                {this.state.textPosts.map((post) => {
+                    return (
+                        <div key={post.id} className="col-12 col-xl-8 offset-xl-2" style={{ paddingBottom: "60px" }}>
+                            <div style={cardStyle}>
+                                <Link to={`/${post.type}/${post.id}`} >
+                                    <h2>{post.userDisplayName}</h2>
+                                </Link>
+                                {this.getConcretePostTypeComponent(post)}
+                                <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
+                                <p>{post.type} post</p>
+                            </div>
+                        </div>
+                    );
+                }
+                )}
+            </div>
         );
     }
 
     showImagePosts() {
         return (
-            this.state.imagePosts.map((post) => {
-                return (
-                    <div key={post.id} className="col-8 mx-auto" style={cardStyle}>
-                        <Link to={`/${post.type}/${post.id}`} >
-                            <h2>{post.userDisplayName}</h2>
-                        </Link>
-                        {this.getConcretePostTypeComponent(post)}
-                        <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
-                        <p>{post.type} post</p>
-                    </div>
-                );
-            }
-            )
+            <div className="row" >
+                {this.state.imagePosts.map((post) => {
+                    return (
+                        <div key={post.id} className="col-12 col-xl-8 offset-xl-2" style={{ paddingBottom: "60px" }}>
+                            <div style={cardStyle}>
+                                <Link to={`/${post.type}/${post.id}`} >
+                                    <h2>{post.userDisplayName}</h2>
+                                </Link>
+                                {this.getConcretePostTypeComponent(post)}
+                                <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
+                                <p>{post.type} post</p>
+                            </div>
+                        </div>
+                    );
+                }
+                )}
+            </div>
         );
     }
 
     showVideoPosts() {
         return (
-            this.state.videoPosts.map((post) => {
-                return (
-                    <div key={post.id} className="col-8 mx-auto" style={cardStyle}>
-                        <Link to={`/${post.type}/${post.id}`} >
-                            <h2>{post.userDisplayName}</h2>
-                        </Link>
-                        {this.getConcretePostTypeComponent(post)}
-                        <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
-                        <p>{post.type} post</p>
-                    </div>
-                );
-            }
-            )
+            <div className="row mx-auto"  style={{width: "100%"}}>
+                {this.state.videoPosts.map((post) => {
+                    return (
+                        <div key={post.id} className="col-12 col-xl-8 offset-xl-2 " style={{ paddingBottom: "60px" }}>
+                            <div style={cardStyle}>
+                                <Link to={`/${post.type}/${post.id}`} >
+                                    <h2>{post.userDisplayName}</h2>
+                                </Link>
+                                {this.getConcretePostTypeComponent(post)}
+                                <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
+                                <p>{post.type} post</p>
+                            </div>
+                        </div>
+                    );
+                }
+                )}
+            </div>
         );
     }
 
@@ -333,18 +349,18 @@ class Feed extends Component {
     }
 
     renderPosts() {
-        if(this.state.isTextFilterOn) {
+        if (this.state.isTextFilterOn) {
             return this.showTextPosts();
         }
-        
-        if(this.state.isImageFilterOn) {
+
+        if (this.state.isImageFilterOn) {
             return this.showImagePosts();
         }
-         
-        if(this.state.isVideoFilterOn) {
+
+        if (this.state.isVideoFilterOn) {
             return this.showVideoPosts();
         }
-        
+
         return this.showAllPosts();
     }
 
@@ -352,9 +368,9 @@ class Feed extends Component {
         return (
             <div className="container-fluid">
                 <div className="row">
-                    <div className=" col-8 dropdown mx-auto" style={dropdownStyle} >
-                        <button className="btn btn-info  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  >
-                            Dropdown button
+                    <div className="col-12" style={{ marginTop: "30px", marginBottom: "10px" }}>
+                        <button className="btn btn-info dropdown-toggle m-auto ml-xl-0" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{ display: "block" }} >
+                            Filter Content
                         </button>
                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <p className="dropdown-item" onClick={this.filterAllPosts} name="text">All Posts</p>
@@ -364,9 +380,9 @@ class Feed extends Component {
                         </div>
                     </div>
                     {this.renderPosts()}
-                </div>
 
-                <input type="button" className="feedUpdateButton btn btn-info btn-lg" name="createPost" value="+" onClick={this.openModal} style={createButtonStyle} />
+                    <input type="button" className="feedUpdateButton btn btn-info btn-lg" name="createPost" value="+" onClick={this.openModal} style={createButtonStyle} />
+                </div>
 
                 <Modal
                     isOpen={this.state.modalIsOpen}
@@ -375,19 +391,27 @@ class Feed extends Component {
                     style={modalStyle}
                 >
                     <nav className="navbar navbar-expand-lg navbar-light modalNavColor">
-                        <h2 className="updateProfileHeading"></h2>
+                        <h2 className="updateProfileHeading">Create New Post</h2>
                     </nav>
                     <div className="row">
                         <div className="col-2">
                         </div>
                         <div className="col" style={modalCardStyle} >
                             <form>
-                                <input type="button" value="Close" onClick={this.closeModal} className="updateProfileCloseButton btn btn-success btn-lg" style={updateButtonStyle} />
-                                <div>
+                                <input type="button" value="Close" onClick={this.closeModal} className="updateProfileCloseButton btn btn-success btn-lg" style={closeButtonStyle} />
+                                <div className="row" >
                                     <Redirect from="/feed" to="/feed/text" />
-                                    <Link to="/feed/text"><h3 style={formStyle}>Create a Text Post</h3></Link>
-                                    <Link to="/feed/image"><h3 style={formStyle}>Create an Image Post</h3></Link>
-                                    <Link to="/feed/video"><h3 style={formStyle}>Create a Video Post</h3></Link>
+                                    <div className="col-12 col-md-4 col-lg-4">
+                                        <Link to="/feed/text"><button className="btn  btn-info feedModalButton " style={formStyle}>Text Post</button></Link>
+                                    </div>
+
+                                    <div className="col-12 col-md-4 col-lg-4">
+                                        <Link to="/feed/image"><button className="btn  btn-info feedModalButton " style={formStyle}>Image Post</button></Link>
+                                    </div>
+
+                                    <div className="col-12 col-md-4 col-lg-4">
+                                        <Link to="/feed/video"><button className="btn  btn-info feedModalButton " style={formStyle}>Video Post</button></Link>
+                                    </div>
                                 </div>
                                 <Switch>
                                     <Route
