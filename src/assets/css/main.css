@@ -3,6 +3,10 @@ html {
    
 }
 
+.no-padding {
+    padding: 0 !important;
+}
+
 .bg {
         background-image: url("../img/bg.jpg") ;
         height: 100%; 
@@ -120,6 +124,11 @@ html {
 .feedUpdateButton {
     width: 70px;
  
+}
+
+.feedModalButton {
+    width: 30%;
+    display: inline-block;
 }
 
 

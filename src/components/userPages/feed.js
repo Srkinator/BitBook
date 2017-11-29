@@ -50,7 +50,15 @@ const modalCardStyle = {
 const updateButtonStyle = {
     transition: "width 0.5s",
     transitionTimingFunction: "linear",
-    
+   
+};
+
+const closeButtonStyle = {
+    transition: "width 0.5s",
+    transitionTimingFunction: "linear",
+    position: "absolute",
+    right: "25px"
+   
 };
 
 const dropdownStyle = {
@@ -73,15 +81,16 @@ const cardStyle = {
 };
 
 const formStyle = {
-    fontSize: "1.5em",
+    fontWeight: "bold",
     padding: "5px",
-    float: "left",
     borderRadius: "5px",
-    width: "50%",
+    width: "25%",
     height: "50px",
     textAlign: "center",
-    margin: "10px 0",
-    color: "rgba(46, 79, 96, 0.7)"
+    margin: "90px 10px 20px 0",
+    color: "rgba(255, 255, 255, 0.9)",
+    float: "left"
+    
 };
 
 const createButtonStyle = {
@@ -198,7 +207,7 @@ class Feed extends Component {
                     <div className="col-12" >
                         <div className="dropdown" style={{ marginTop: "30px", marginBottom: "10px" }}>
                             <button className="btn btn-info  dropdown-toggle m-auto ml-xl-0" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{ display: "block" }}  >
-                                Dropdown button
+                                Filter Content
                             </button>
                             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <p className="dropdown-item" onClick={this.showText} >Text Posts</p>
@@ -238,19 +247,19 @@ class Feed extends Component {
                     style={modalStyle}
                 >
                     <nav className="navbar navbar-expand-lg navbar-light modalNavColor">
-                        <h2 className="updateProfileHeading"></h2>
+                        <h2 className="updateProfileHeading">Create New Post</h2>
                     </nav>
                     <div className="row">
                         <div className="col-2">
                         </div>
                         <div className="col" style={modalCardStyle} >
                             <form>
-                                <input type="button" value="Close" onClick={this.closeModal} className="updateProfileCloseButton btn btn-success btn-lg" style={updateButtonStyle} />
-                                <div>
+                                <input type="button" value="Close" onClick={this.closeModal} className="updateProfileCloseButton btn btn-success btn-lg" style={closeButtonStyle} />
+                                <div >
                                     <Redirect from="/feed" to="/feed/text" />
-                                    <Link to="/feed/text"><h3 style={formStyle}>Create a Text Post</h3></Link>
-                                    <Link to="/feed/image"><h3 style={formStyle}>Create an Image Post</h3></Link>
-                                    <Link to="/feed/video"><h3 style={formStyle}>Create a Video Post</h3></Link>
+                                    <Link to="/feed/text"><button className="btn  btn-info feedModalButton" style={formStyle}>Text Post</button></Link>
+                                    <Link to="/feed/image"><button className="btn  btn-info feedModalButton" style={formStyle}>Image Post</button></Link>
+                                    <Link to="/feed/video"><button className="btn  btn-info feedModalButton" style={formStyle}>Video Post</button></Link>
                                 </div>
                                 <Switch>
                                     <Route
