@@ -112,7 +112,6 @@ class UserProfile extends Component {
     }
 
     getOtherProfile(id) {
-
         this.getData.getSingleUserData((user) => {
             this.setState({
                 name: user.data.name,
@@ -125,6 +124,7 @@ class UserProfile extends Component {
             });
         }, id);
     }
+
     getMyProfile() {
         this.getData.getProfileData((profile) => {
             this.setState({
@@ -240,6 +240,10 @@ class UserProfile extends Component {
         );
     }
 
+    // showUserPosts() {
+
+    // }
+
     render() {
         return (
             <div className="container">
@@ -252,7 +256,7 @@ class UserProfile extends Component {
                                 <p className="card-text">{this.state.aboutShort}</p>
                                 <p className="card-text">{this.state.about}</p>
                                 {this.props.match.params.id ? "" : this.displayEditProfileButton()}
-                                <button className="btn btn-success btn-lg profileButton">Posts: {this.state.posts}</button>
+                                <button className="btn btn-success btn-lg profileButton" onClick={this.showUserPosts} >Posts: {this.state.posts}</button>
                                 <button className="btn btn-success btn-lg profileButton">Comments:  {this.state.comments}</button>
                             </div>
                         </div>

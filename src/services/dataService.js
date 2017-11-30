@@ -11,6 +11,7 @@ class DataService {
 
     getProfileData(profileDataHandler) {
         this.communication.getRequest("profile", (response) => {
+            console.log(response);
             const profile = new Profile(response.data);
             profileDataHandler(profile);
         });
@@ -110,6 +111,22 @@ class DataService {
             successHandler(serverResponseData);
         }, (serverErrorObject) => {
             errorHandler(serverErrorObject);
+        });
+    }
+
+    postComment(body, successHandler, errorHandler){
+        this.communication.postRequest("Comments", body, (response) =>{
+            successHandler(response);
+        }, (error) => {
+            errorHandler(error);
+        });
+    }
+
+    getComments(postId, successHandler, errorHandler){
+        this.communication.getRequest(`Comments/?postId=${postId}`, (response) =>{
+            successHandler(response);
+        }, (error) => {
+            errorHandler(error);
         });
     }
 }

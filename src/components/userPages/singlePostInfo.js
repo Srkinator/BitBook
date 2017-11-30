@@ -1,8 +1,12 @@
 import React, { Component } from "react";
+import { Route, Redirect } from "react-router-dom";
 
 import DataService from "../../services/dataService";
 import RedirectionService from "../../services/redirectionService";
-import Comment from "../userPages/comment";
+import CreateComment from "../userPages/createComment";
+import GetComments from "../userPages/getComments";
+import RenderPost from "../userPages/renderPost";
+
 
 const cardStyle = {
     textAlign: "center",
@@ -12,21 +16,6 @@ const cardStyle = {
     marginTop: "50px",
     padding: "40px 0"
 
-};
-
-const imgStyle = {
-    borderRadius: "50px",
-    width: "60%",
-    margin: "10px auto",
-    padding: "10px",
-    border: "1px solid rgba(178,215,251,0.2)",
-    boxShadow: "-12px 11px 34px -1px rgba(44,62,80,0.34)"
-};
-
-const videoStyle = {
-    padding: "10px",
-    border: "1px solid rgba(178,215,251,0.2)",
-    boxShadow: "-12px 11px 34px -1px rgba(44,62,80,0.34)"
 };
 
 class SinglePostInfo extends Component {
@@ -40,7 +29,9 @@ class SinglePostInfo extends Component {
             singlePostInfo: {},
             myUserId: "",
             userId: "",
-            postId: ""
+            postId: "",
+            comments: [],
+            didCommentArrive: false
         };
 
 
@@ -48,11 +39,13 @@ class SinglePostInfo extends Component {
         this.DataService = new DataService();
 
 
-        this.processVideoUrl = this.processVideoUrl.bind(this);
+        this.bindInit();
+    }
+
+    bindInit() {
         this.getMyId = this.getMyId.bind(this);
         this.isMyPost = this.isMyPost.bind(this);
-        this.renderDeleteButton = this.renderDeleteButton.bind(this);
-        this.deletePost = this.deletePost.bind(this);
+        this.getComments = this.getComments.bind(this);
     }
 
     componentDidMount() {
@@ -75,6 +68,7 @@ class SinglePostInfo extends Component {
                     userId: response.userId,
                     postId: response.id
                 });
+                this.getComments();
             },
             (error) => {
                 this.setState({
@@ -83,7 +77,6 @@ class SinglePostInfo extends Component {
                 });
             }
         );
-
     }
 
     isMyPost() {
@@ -98,41 +91,28 @@ class SinglePostInfo extends Component {
         });
     }
 
-    processVideoUrl(video) {
-        const videoEndPart = video.split("=")[1];
-        return (
-            <iframe width="90%" height="415" style={videoStyle} src={`https://www.youtube.com/embed/${videoEndPart}`} frameBorder="0" allowFullScreen></iframe>
-        );
-    }
-
-    deletePost() {
+    getComments() {
         const postId = this.state.postId;
-        this.DataService.deletePost(postId, (response) => {
-            this.redirectService.redirect("feed");
+        this.DataService.getComments(postId, (response) => {
+            this.setState({
+                comments: response.data
+            });
+
         }, (error) => {
             console.log(error);
         });
     }
 
-    renderDeleteButton() {
-        if (this.isMyPost()) {
-            return <input className="btn btn-success btn-lg profileButton" type="button" value="Delete Post" onClick={this.deletePost} />;
-        }
-    }
-
     render() {
-        const singlePost = this.state.singlePostInfo;
         return (
             <div className="container">
                 <div className="row">
                     <div className="mx-auto col-12">
                         <div className="card " style={cardStyle}>
                             <div>
-                                <h1 className="card-title profileName ">{singlePost.userDisplayName}</h1>
-                                <p>{singlePost.dateCreated}</p>
-                                <p>{singlePost.text ? <p>{singlePost.text}</p> : singlePost.imageUrl ? <img src={singlePost.imageUrl} style={imgStyle} /> : singlePost.videoUrl ? this.processVideoUrl(singlePost.videoUrl) : "no content detected"}</p>
-                                {this.renderDeleteButton()}
-                                <Comment />
+                                <RenderPost singlePost={this.state.singlePostInfo} isMyPost={this.isMyPost} postId={this.state.postId} />
+                                <GetComments comments={this.state.comments} />
+                                <CreateComment currentUrl={this.props.match.url} postId={this.state.postId} notifyAboutComment={this.getComments} />
                             </div>
                         </div>
                     </div>

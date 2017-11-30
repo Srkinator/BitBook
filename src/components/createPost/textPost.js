@@ -46,7 +46,7 @@ class TextPost extends Component {
             <div>
                 <textarea placeholder="This is a text post" rows="5" className="updateProfileForm form-control" onChange={this.getTextPost} required></textarea>
                 <input type="button" value="Post" className="updateProfileUpdateButton btn btn-info btn-lg" style={updateButtonStyle} name="textPost" onClick={this.createTextPost} />
-                <p>{this.state.isThereError ? `Error ${this.state.error}` : ""}</p>
+                <div>{this.state.isThereError ? `Error ${this.state.error}` : ""}</div>
             </div>
         );
     }
