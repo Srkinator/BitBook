@@ -84,7 +84,7 @@ const formStyle = {
     width: "90%",
     height: "50px",
     textAlign: "center",
-    margin: "90px 10px 20px 0",
+    margin: "10px",
     color: "rgba(255, 255, 255, 0.9)",
 };
 
@@ -255,7 +255,7 @@ class Feed extends Component {
 
     showVideoPosts() {
         return (
-            <div className="row mx-auto"  style={{width: "100%"}}>
+            <div className="row mx-auto" style={{ width: "100%" }}>
                 {this.state.videoPosts.map((post) => {
                     return (
                         <div key={post.id} className="col-12 col-xl-8 offset-xl-2 " style={{ paddingBottom: "60px" }}>
@@ -398,8 +398,13 @@ class Feed extends Component {
                         </div>
                         <div className="col" style={modalCardStyle} >
                             <form>
-                                <input type="button" value="Close" onClick={this.closeModal} className="updateProfileCloseButton btn btn-success btn-lg" style={closeButtonStyle} />
-                                <div className="row" >
+                                <div className="row">
+                                    <div className="col-12">
+                                        <input type="button" value="Close" onClick={this.closeModal} className="updateProfileCloseButton btn btn-success btn-lg" style={closeButtonStyle} />
+                                    </div>
+                                </div>
+
+                                <div className="row mx-auto" >
                                     <Redirect from="/feed" to="/feed/text" />
                                     <div className="col-12 col-md-4 col-lg-4">
                                         <Link to="/feed/text"><button className="btn  btn-info feedModalButton " style={formStyle}>Text Post</button></Link>
@@ -413,6 +418,7 @@ class Feed extends Component {
                                         <Link to="/feed/video"><button className="btn  btn-info feedModalButton " style={formStyle}>Video Post</button></Link>
                                     </div>
                                 </div>
+
                                 <Switch>
                                     <Route
                                         path="/feed/text"

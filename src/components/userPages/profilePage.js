@@ -22,7 +22,7 @@ const cardStyle = {
     padding: "20px",
     margin: "60px 0",
     textAlign: "center",
-    borderRadius: "10px 130px 10px 130px",
+    borderRadius: "2em",
     backgroundColor: "rgba(116, 162, 208, 0.2)",
     boxShadow: "-12px 11px 34px -1px rgba(44,62,80,0.34)"
 };
