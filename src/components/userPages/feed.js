@@ -216,12 +216,12 @@ class Feed extends Component {
                     return (
                         <div key={post.id} className="col-12 col-xl-8 offset-xl-2" style={{ paddingBottom: "60px" }}>
                             <div style={cardStyle}>
-                                <Link to={`/${post.type}/${post.id}`} >
-                                    <h2>{post.userDisplayName}</h2>
-                                </Link>
+                                <h2>{post.userDisplayName}</h2>
                                 {this.getConcretePostTypeComponent(post)}
-                                <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
-                                <p>{post.type} post</p>
+                                <Link to={`/${post.type}/${post.id}`} >
+                                    <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
+                                    <p>{post.type} post</p>
+                                </Link>
                             </div>
                         </div>
                     );
@@ -238,12 +238,12 @@ class Feed extends Component {
                     return (
                         <div key={post.id} className="col-12 col-xl-8 offset-xl-2" style={{ paddingBottom: "60px" }}>
                             <div style={cardStyle}>
-                                <Link to={`/${post.type}/${post.id}`} >
-                                    <h2>{post.userDisplayName}</h2>
-                                </Link>
+                                <h2>{post.userDisplayName}</h2>
                                 {this.getConcretePostTypeComponent(post)}
-                                <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
-                                <p>{post.type} post</p>
+                                <Link to={`/${post.type}/${post.id}`} >
+                                    <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
+                                    <p>{post.type} post</p>
+                                </Link>
                             </div>
                         </div>
                     );
@@ -255,17 +255,17 @@ class Feed extends Component {
 
     showVideoPosts() {
         return (
-            <div className="row mx-auto"  style={{width: "100%"}}>
+            <div className="row mx-auto" style={{ width: "100%" }}>
                 {this.state.videoPosts.map((post) => {
                     return (
                         <div key={post.id} className="col-12 col-xl-8 offset-xl-2 " style={{ paddingBottom: "60px" }}>
                             <div style={cardStyle}>
-                                <Link to={`/${post.type}/${post.id}`} >
-                                    <h2>{post.userDisplayName}</h2>
-                                </Link>
+                                <h2>{post.userDisplayName}</h2>
                                 {this.getConcretePostTypeComponent(post)}
-                                <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
-                                <p>{post.type} post</p>
+                                <Link to={`/${post.type}/${post.id}`} >
+                                    <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
+                                    <p>{post.type} post</p>
+                                </Link>
                             </div>
                         </div>
                     );
