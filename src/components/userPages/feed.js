@@ -51,14 +51,11 @@ const modalCardStyle = {
 const updateButtonStyle = {
     transition: "width 0.5s",
     transitionTimingFunction: "linear",
-
 };
 
 const closeButtonStyle = {
     transition: "width 0.5s",
     transitionTimingFunction: "linear",
-
-
 };
 
 const dropdownStyle = {
@@ -74,7 +71,6 @@ const cardStyle = {
     borderRadius: "2em",
     backgroundColor: "rgba(116, 162, 208, 0.2)",
     boxShadow: "-12px 11px 34px -1px rgba(44,62,80,0.34)",
-
 };
 
 const formStyle = {
@@ -91,7 +87,6 @@ const formStyle = {
 const createButtonStyle = {
     transition: "width 0.5s",
     transitionTimingFunction: "linear",
-    // width: "3.5%",
     borderRadius: "35px",
     position: "fixed",
     bottom: "25px",
@@ -128,10 +123,7 @@ class Feed extends Component {
         this.filterTextPosts = this.filterTextPosts.bind(this);
         this.filterImagePosts = this.filterImagePosts.bind(this);
         this.filterVideoPosts = this.filterVideoPosts.bind(this);
-        this.showAllPosts = this.showAllPosts.bind(this);
-        this.showTextPosts = this.showTextPosts.bind(this);
-        this.showImagePosts = this.showImagePosts.bind(this);
-        this.showVideoPosts = this.showVideoPosts.bind(this);
+        this.showPosts = this.showPosts.bind(this);
         this.filterAllPosts = this.filterAllPosts.bind(this);
     }
 
@@ -187,80 +179,16 @@ class Feed extends Component {
         );
     }
 
-    showAllPosts() {
-        return (
-            <div className="row" >
-                {this.state.posts.map((post) => {
-                    return (
-                        <div key={post.id} className="col-12 col-xl-8 offset-xl-2" style={{ paddingBottom: "60px" }}>
-                            <div style={cardStyle}>
-                                <Link to={`/${post.type}/${post.id}`} >
-                                    <h2>{post.userDisplayName}</h2>
-                                </Link>
-                                {this.getConcretePostTypeComponent(post)}
-                                <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
-                                <p>{post.type} post</p>
-                            </div>
-                        </div>
-                    );
-                }
-                )}
-            </div>
-        );
-    }
-
-    showTextPosts() {
-        return (
-            <div className="row" >
-                {this.state.textPosts.map((post) => {
-                    return (
-                        <div key={post.id} className="col-12 col-xl-8 offset-xl-2" style={{ paddingBottom: "60px" }}>
-                            <div style={cardStyle}>
-                                <h2>{post.userDisplayName}</h2>
-                                {this.getConcretePostTypeComponent(post)}
-                                <Link to={`/${post.type}/${post.id}`} >
-                                    <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
-                                    <p>{post.type} post</p>
-                                </Link>
-                            </div>
-                        </div>
-                    );
-                }
-                )}
-            </div>
-        );
-    }
-
-    showImagePosts() {
-        return (
-            <div className="row" >
-                {this.state.imagePosts.map((post) => {
-                    return (
-                        <div key={post.id} className="col-12 col-xl-8 offset-xl-2" style={{ paddingBottom: "60px" }}>
-                            <div style={cardStyle}>
-                                <h2>{post.userDisplayName}</h2>
-                                {this.getConcretePostTypeComponent(post)}
-                                <Link to={`/${post.type}/${post.id}`} >
-                                    <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
-                                    <p>{post.type} post</p>
-                                </Link>
-                            </div>
-                        </div>
-                    );
-                }
-                )}
-            </div>
-        );
-    }
-
-    showVideoPosts() {
+    showPosts(posts) {
         return (
             <div className="row mx-auto" style={{ width: "100%" }}>
-                {this.state.videoPosts.map((post) => {
+                {posts.map((post) => {
                     return (
-                        <div key={post.id} className="col-12 col-xl-8 offset-xl-2 " style={{ paddingBottom: "60px" }}>
+                        <div key={post.id} className="col-12 col-xl-8 offset-xl-2" style={{ paddingBottom: "60px" }}>
                             <div style={cardStyle}>
-                                <h2>{post.userDisplayName}</h2>
+                                <Link to={`/profile/${post.userId}`} >
+                                    <h2>{post.userDisplayName}</h2>
+                                </Link>
                                 {this.getConcretePostTypeComponent(post)}
                                 <Link to={`/${post.type}/${post.id}`} >
                                     <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
@@ -282,7 +210,7 @@ class Feed extends Component {
             isVideoFilterOn: false,
         });
 
-        this.showAllPosts();
+        this.showPosts(this.state.posts);
     }
 
     filterTextPosts() {
@@ -350,18 +278,18 @@ class Feed extends Component {
 
     renderPosts() {
         if (this.state.isTextFilterOn) {
-            return this.showTextPosts();
+            return this.showPosts(this.state.textPosts);
         }
 
         if (this.state.isImageFilterOn) {
-            return this.showImagePosts();
+            return this.showPosts(this.state.imagePosts);
         }
 
         if (this.state.isVideoFilterOn) {
-            return this.showVideoPosts();
+            return this.showPosts(this.state.videoPosts);
         }
 
-        return this.showAllPosts();
+        return this.showPosts(this.state.posts);
     }
 
     render() {
