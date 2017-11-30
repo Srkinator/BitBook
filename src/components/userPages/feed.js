@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Modal from "react-modal";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
+import Pagination from "react-js-pagination";
 
 import DataService from "../../services/dataService";
 import RedirectionService from "../../services/redirectionService";
@@ -10,6 +11,7 @@ import TextPost from "../createPost/textPost";
 import ImagePost from "../createPost/imagePost";
 import VideoPost from "../createPost/videoPost";
 import SinglePostInfo from "../userPages/singlePostInfo";
+import { POSTS_PER_PAGE } from "../../constants";
 
 const rowStyle = {
     maxHeight: "200px"
@@ -105,12 +107,14 @@ class Feed extends Component {
             videoPosts: [],
             isTextFilterOn: false,
             isImageFilterOn: false,
-            isVideoFilterOn: false
+            isVideoFilterOn: false,
+            activePage: 1,
+            totalPostsCount: 0
         };
 
         this.bindInit();
 
-        this.getData = new DataService();
+        this.dataService = new DataService();
         this.redirect = new RedirectionService();
         this.request = new CommunicationService();
     }
@@ -125,6 +129,8 @@ class Feed extends Component {
         this.filterVideoPosts = this.filterVideoPosts.bind(this);
         this.showPosts = this.showPosts.bind(this);
         this.filterAllPosts = this.filterAllPosts.bind(this);
+        this.handlePageChange = this.handlePageChange.bind(this);
+        this.calculatePageRange = this.calculatePageRange.bind(this);
     }
 
     componentDidMount() {
@@ -132,7 +138,7 @@ class Feed extends Component {
     }
 
     getPosts() {
-        this.getData.getPosts((posts) => {
+        this.dataService.getPosts((posts) => {
             this.setState({
                 posts
             });
@@ -161,7 +167,7 @@ class Feed extends Component {
             postType = "VideoPosts";
         }
 
-        this.getData.createPost(postType, post, () => {
+        this.dataService.createPost(postType, post, () => {
             this.closeModal();
             this.getPosts();
         }, (error) => {
@@ -292,6 +298,28 @@ class Feed extends Component {
         return this.showPosts(this.state.posts);
     }
 
+    handlePageChange(pageNumber) {
+        this.dataService.getPostCount((response) => {
+            this.setState({
+                activePage: pageNumber,
+                totalPostsCount: response
+            });
+            
+        }, (error) => {
+            console.log(error);
+        });
+
+
+
+
+    }
+
+    calculatePageRange() {
+        const postsCount = this.state.posts.length;
+        const pageRange = Math.round(postsCount/POSTS_PER_PAGE);
+        return pageRange;
+    };
+
     render() {
         return (
             <div className="container-fluid">
@@ -308,7 +336,12 @@ class Feed extends Component {
                         </div>
                     </div>
                     {this.renderPosts()}
-
+                    <Pagination
+                        activePage={this.state.activePage}
+                        itemsCountPerPage={POSTS_PER_PAGE}
+                        pageRangeDisplayed={this.calculatePageRange}
+                        onChange={this.handlePageChange}
+                    />
                     <input type="button" className="feedUpdateButton btn btn-info btn-lg" name="createPost" value="+" onClick={this.openModal} style={createButtonStyle} />
                 </div>
 
