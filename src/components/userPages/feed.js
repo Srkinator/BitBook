@@ -466,15 +466,15 @@ class Feed extends Component {
                                 <div className="row mx-auto" >
                                     <Redirect from="/feed" to="/feed/text" />
                                     <div className="col-12 col-md-4 col-lg-4">
-                                        <Link to="/feed/text"><button className="btn  btn-info feedModalButton " style={formStyle}>Text Post</button></Link>
+                                        <Link to="/feed/text"><button className="btn  btn-primary feedModalButton " style={formStyle}>Text Post</button></Link>
                                     </div>
 
                                     <div className="col-12 col-md-4 col-lg-4">
-                                        <Link to="/feed/image"><button className="btn  btn-info feedModalButton " style={formStyle}>Image Post</button></Link>
+                                        <Link to="/feed/image"><button className="btn  btn-primary feedModalButton " style={formStyle}>Image Post</button></Link>
                                     </div>
 
                                     <div className="col-12 col-md-4 col-lg-4">
-                                        <Link to="/feed/video"><button className="btn  btn-info feedModalButton " style={formStyle}>Video Post</button></Link>
+                                        <Link to="/feed/video"><button className="btn  btn-primary feedModalButton " style={formStyle}>Video Post</button></Link>
                                     </div>
                                 </div>
 
