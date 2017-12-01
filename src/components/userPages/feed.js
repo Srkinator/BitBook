@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Pagination from "react-js-pagination";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 import DataService from "../../services/dataService";
 import RedirectionService from "../../services/redirectionService";
@@ -108,8 +109,11 @@ class Feed extends Component {
             isTextFilterOn: false,
             isImageFilterOn: false,
             isVideoFilterOn: false,
-            activePage: 1,
-            totalPostsCount: 0
+            activePage: 0,
+            totalPostsCount: 0,
+            newTop: 0,
+            hasMore: true,
+            visibility: "hidden"
         };
 
         this.bindInit();
@@ -130,15 +134,14 @@ class Feed extends Component {
         this.showPosts = this.showPosts.bind(this);
         this.filterAllPosts = this.filterAllPosts.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
-        this.calculatePageRange = this.calculatePageRange.bind(this);
+        this.toggleBackToTopButton = this.toggleBackToTopButton.bind(this);
     }
-
     componentDidMount() {
         this.getPosts();
     }
 
     getPosts() {
-        this.dataService.getPosts(0, (posts) => {
+        this.dataService.getPosts(0, POSTS_PER_PAGE, (posts) => {
             this.setState({
                 posts
             });
@@ -154,6 +157,26 @@ class Feed extends Component {
             console.log(error);
         });
     }
+    
+    // Get posts for PAGINATION
+
+    // getPosts() {
+    //     this.dataService.getPosts(0, (posts) => {
+    //         this.setState({
+    //             posts
+    //         });
+    //     }, (error) => {
+    //         console.log(error);
+    //     });
+
+    //     this.dataService.getPostCount((response) => {
+    //         this.setState({
+    //             totalPostsCount: response
+    //         });
+    //     }, (error) => {
+    //         console.log(error);
+    //     });
+    // }
 
     openModal() {
         this.setState({ modalIsOpen: true });
@@ -306,22 +329,53 @@ class Feed extends Component {
         return this.showPosts(this.state.posts);
     }
 
-    handlePageChange(pageNumber) {
-        this.dataService.getPosts((POSTS_PER_PAGE*(pageNumber - 1)), (posts) => {
+    //  Infinite Scroll Handler
+
+    handlePageChange() {
+        this.dataService.getPostsForInfiniteScroll(this.state.newTop + 5, (posts) => {
             this.setState({
                 posts: posts,
-                activePage: pageNumber
+                newTop: this.state.newTop + 5
             });
         }, (error) => {
             console.log(error);
         });
+
+        if (this.state.posts.length == this.state.totalPostsCount) {
+            this.setState({
+                hasMore: false
+            });
+        }
     }
 
-    calculatePageRange() {
-        const postsCount = this.state.totalPostsCount;
-        const pageRange = Math.round(postsCount/POSTS_PER_PAGE);
-        return pageRange;
-    };
+    // Pagination handler
+
+    // handlePageChange(pageNumber) {
+    //     this.dataService.getPosts((POSTS_PER_PAGE*(pageNumber - 1)), (posts) => {
+    //         this.setState({
+    //             posts: posts,
+    //             activePage: pageNumber
+    //         });
+    //     }, (error) => {
+    //         console.log(error);
+    //     });
+    // }
+
+    toggleBackToTopButton() {
+        this.setState({
+            visibility: "hidden"
+        });
+
+        if (window.scrollY > 100) {
+            this.setState({
+                visibility: ""
+            });
+        }
+    }
+
+    backToTop() {
+        document.documentElement.scrollTop = 0;
+    }
 
     render() {
         return (
@@ -338,14 +392,32 @@ class Feed extends Component {
                             <p className="dropdown-item" onClick={this.filterVideoPosts} name="video">Video Posts</p>
                         </div>
                     </div>
-                    {this.renderPosts()}
-                    <Pagination
+                    <InfiniteScroll
+                        refreshFunction={this.refresh}
+                        next={this.handlePageChange}
+                        onScroll={this.toggleBackToTopButton}
+                        hasMore={this.state.hasMore}
+                        pullDownToRefreshContent={
+                            <h3 style={{ textAlign: "center" }}>&#8595; Pull down to refresh</h3>
+                        }
+                        releaseToRefreshContent={
+                            <h3 style={{ textAlign: "center" }}>&#8593; Release to refresh</h3>
+                        }
+                        endMessage={
+                            <p style={{ textAlign: "center" }}>
+                                <b>Yay! You have seen it all</b>
+                            </p>
+                        }>
+                        {/* <Pagination
                         activePage={this.state.activePage}
                         itemsCountPerPage={POSTS_PER_PAGE}
                         totalItemsCount={this.state.totalPostsCount}
                         onChange={this.handlePageChange}
-                    />
+                    /> */}
+                    </InfiniteScroll>
+                    {this.renderPosts()}
                     <input type="button" className="feedUpdateButton btn btn-info btn-lg" name="createPost" value="+" onClick={this.openModal} style={createButtonStyle} />
+                    <input value="Back to Top" type="button" onClick={this.backToTop} style={{ visibility: this.state.visibility, position: "fixed", bottom: "0" }} />
                 </div>
 
                 <Modal

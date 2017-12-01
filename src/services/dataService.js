@@ -62,8 +62,26 @@ class DataService {
         });
     }
 
-    getPosts(pagesToSkip, postsHandler, errorHandler) {
-        this.communication.getRequest(`Posts?$skip=${pagesToSkip}&$top=10&$orderby=DateCreated desc`, (posts) => {
+    getPosts(pagesToSkip, pagesToRender, postsHandler, errorHandler) {
+        this.communication.getRequest(`Posts?$skip=${pagesToSkip}&$top=${pagesToRender}&$orderby=DateCreated desc`, (posts) => {
+            let postInfo = posts.data;
+            let listOfPosts = [];
+            postInfo.forEach((post) => {
+                const newPost = new Post(post);
+                listOfPosts.push(newPost);
+            });
+            postsHandler(listOfPosts);
+        }, (error) => {
+            if (!errorHandler) {
+                console.log("Handler not provided");
+            } else {
+                errorHandler(error);
+            }
+        });
+    }
+
+    getPostsForInfiniteScroll(pagesToRender, postsHandler, errorHandler) {
+        this.communication.getRequest(`Posts?$top=${pagesToRender}&$orderby=DateCreated desc`, (posts) => {
             let postInfo = posts.data;
             let listOfPosts = [];
             postInfo.forEach((post) => {
