@@ -13,6 +13,7 @@ import ImagePost from "../createPost/imagePost";
 import VideoPost from "../createPost/videoPost";
 import SinglePostInfo from "../userPages/singlePostInfo";
 import { POSTS_PER_PAGE } from "../../constants";
+import EnlargeImage from "../userPages/enlargeImage";
 
 const rowStyle = {
     maxHeight: "200px"
@@ -113,7 +114,8 @@ class Feed extends Component {
             totalPostsCount: 0,
             newTop: 0,
             hasMore: true,
-            visibility: "hidden"
+            visibility: "hidden",
+            enlargeImage: ""
         };
 
         this.bindInit();
@@ -135,6 +137,7 @@ class Feed extends Component {
         this.filterAllPosts = this.filterAllPosts.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
         this.toggleBackToTopButton = this.toggleBackToTopButton.bind(this);
+        this.enlargeImage = this.enlargeImage.bind(this);
     }
     componentDidMount() {
         this.getPosts();
@@ -157,7 +160,7 @@ class Feed extends Component {
             console.log(error);
         });
     }
-    
+
     // Get posts for PAGINATION
 
     // getPosts() {
@@ -307,10 +310,29 @@ class Feed extends Component {
         }
 
         if (post.type === "image") {
-            return <img src={post.imageUrl} style={imgStyle} />;
+            return (
+                <div id="bigPicDiv">
+                    <img src={post.imageUrl} style={imgStyle} onClick={this.enlargeImage} />;
+                </div>
+            );
         }
 
         return this.processVideoUrl(post.videoUrl);
+    }
+
+    enlargeImage(event) {
+        let img = event.target;
+        let bigDiv = document.querySelector("#bigPicDiv");
+
+        this.setState({
+            enlargeImg: img,
+            visibility: ""
+        });
+
+        bigDiv.setAttribute("position", "absolute");
+        bigDiv.setAttribute("width", "80%");
+
+        // let()
     }
 
     renderPosts() {
@@ -380,6 +402,7 @@ class Feed extends Component {
     render() {
         return (
             <div className="container-fluid">
+                <EnlargeImage imgsrc={this.state.enlargeImage} visibility={this.state.visibility} />
                 <div className="row">
                     <div className="col-12" style={{ marginTop: "30px", marginBottom: "10px" }}>
                         <button className="btn btn-info dropdown-toggle m-auto ml-xl-0" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{ display: "block" }} >
