@@ -138,9 +138,17 @@ class Feed extends Component {
     }
 
     getPosts() {
-        this.dataService.getPosts((posts) => {
+        this.dataService.getPosts(0, (posts) => {
             this.setState({
                 posts
+            });
+        }, (error) => {
+            console.log(error);
+        });
+
+        this.dataService.getPostCount((response) => {
+            this.setState({
+                totalPostsCount: response
             });
         }, (error) => {
             console.log(error);
@@ -299,23 +307,18 @@ class Feed extends Component {
     }
 
     handlePageChange(pageNumber) {
-        this.dataService.getPostCount((response) => {
+        this.dataService.getPosts((POSTS_PER_PAGE*(pageNumber - 1)), (posts) => {
             this.setState({
-                activePage: pageNumber,
-                totalPostsCount: response
+                posts: posts,
+                activePage: pageNumber
             });
-            
         }, (error) => {
             console.log(error);
         });
-
-
-
-
     }
 
     calculatePageRange() {
-        const postsCount = this.state.posts.length;
+        const postsCount = this.state.totalPostsCount;
         const pageRange = Math.round(postsCount/POSTS_PER_PAGE);
         return pageRange;
     };
@@ -339,7 +342,7 @@ class Feed extends Component {
                     <Pagination
                         activePage={this.state.activePage}
                         itemsCountPerPage={POSTS_PER_PAGE}
-                        pageRangeDisplayed={this.calculatePageRange}
+                        totalItemsCount={this.state.totalPostsCount}
                         onChange={this.handlePageChange}
                     />
                     <input type="button" className="feedUpdateButton btn btn-info btn-lg" name="createPost" value="+" onClick={this.openModal} style={createButtonStyle} />

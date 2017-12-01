@@ -62,8 +62,8 @@ class DataService {
         });
     }
 
-    getPosts(postsHandler, errorHandler) {
-        this.communication.getRequest("Posts", (posts) => {
+    getPosts(pagesToSkip, postsHandler, errorHandler) {
+        this.communication.getRequest(`Posts?$skip=${pagesToSkip}&$top=10`, (posts) => {
             let postInfo = posts.data;
             let listOfPosts = [];
             postInfo.forEach((post) => {
@@ -71,7 +71,6 @@ class DataService {
                 listOfPosts.push(newPost);
             });
             postsHandler(listOfPosts);
-
         }, (error) => {
             if (!errorHandler) {
                 console.log("Handler not provided");
