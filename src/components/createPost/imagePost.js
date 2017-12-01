@@ -17,7 +17,8 @@ class TextPost extends Component {
 
         this.state = {
             imagePostContent: "",
-            uploadedImage: ""
+            uploadedImage: "",
+            successfulUpload: false
         };
 
         this.bindInit();
@@ -56,7 +57,8 @@ class TextPost extends Component {
         const file = document.querySelector("input[type=file]").files[0];
         this.dataService.uploadImage(file, (response) => {
             this.setState({
-                uploadedImage: response.data
+                uploadedImage: response.data,
+                successfulUpload: true
             });
         }, (error) => {
             console.log(error);
@@ -67,6 +69,7 @@ class TextPost extends Component {
         return (
             <div>
                 <input type="text" placeholder="This is an image post" rows="5" className="updateProfileForm form-control" onChange={this.getImagePost} required />
+                {this.state.successfulUpload ? <p>Image successfully uploaded!</p> : ""}
                 <input type="button" value="Post" className="updateProfileUpdateButton btn btn-info btn-lg" style={updateButtonStyle} name="imagePost" onClick={this.createImagePost} />
                 <input type="file" />
                 <input type="button" onClick={this.uploadImage} value="Upload" />

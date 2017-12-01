@@ -79,7 +79,9 @@ class UserProfile extends Component {
             newEmail: "",
             newAvatarUrl: "",
             error: "",
-            isThereError: false
+            isThereError: false,
+            uploadedImage: "",
+            successfulUpload: false       
         };
 
         this.getData = new DataService();
@@ -99,6 +101,7 @@ class UserProfile extends Component {
         this.displayEditProfileButton = this.displayEditProfileButton.bind(this);
         this.getMyProfile = this.getMyProfile.bind(this);
         this.getOtherProfile = this.getOtherProfile.bind(this);
+        this.uploadImage = this.uploadImage.bind(this);
     }
 
     componentWillMount() {
@@ -175,7 +178,7 @@ class UserProfile extends Component {
 
         this.state.newName ? newName = this.state.newName : newName = this.state.name;
         this.state.newAbout ? newAbout = this.state.newAbout : newAbout = this.state.about;
-        this.state.newAvatarUrl ? newAvatarUrl = this.state.newAvatarUrl : newAvatarUrl = this.state.avatar;
+        this.state.newAvatarUrl ? newAvatarUrl = this.state.newAvatarUrl : this.state.uploadedImage ? newAvatarUrl = this.state.uploadedImage : newAvatarUrl = this.state.avatar;
         this.state.newAboutShort ? newAboutShort = this.state.newAboutShort : newAboutShort = this.state.aboutShort;
         this.state.newEmail ? newEmail = this.state.newEmail : newEmail = this.state.email;
 
@@ -187,22 +190,27 @@ class UserProfile extends Component {
             email: newEmail
         };
 
+        this.setState({
+            successfulUpload: false
+        });
+
         this.getData.updateProfileData(newProfileData, (error) => {
             console.log(error);
             this.setState({
                 isThereError: true,
-                error: error.response.status
+                error: error.response.status,
             });
         });
 
     }
 
     uploadImage() {
-        const file = document.querySelector("input[type=file]").files[0];
-        console.log(file);
-        this.dataService.uploadImage(file, (response) => {
+        const file = document.querySelector("#profileImgUpload").files[0];
+
+        this.getData.uploadImage(file, (response) => {
             this.setState({
-                uploadedImage: response.data
+                uploadedImage: response.data,
+                successfulUpload: true
             });
         }, (error) => {
             console.log(error);
@@ -231,12 +239,13 @@ class UserProfile extends Component {
                                     <input type="text" value={this.state.name} onChange={this.collectFieldValue} name="name" placeholder="Please enter a new name" className="updateProfileForm form-control form-control-lg" required />
                                     <input type="email" value={this.state.email} onChange={this.collectFieldValue} name="email" placeholder={`Current email: ${this.state.email}`} className="updateProfileForm form-control form-control-lg" required />
                                     <input type="text" value={this.state.aboutShort} onChange={this.collectFieldValue} name="aboutShort" placeholder="Please enter a short description" className="updateProfileForm form-control form-control-lg" required />
-                                    <input type="text" value={this.state.avatarUrl} onChange={this.collectFieldValue} name="avatar" placeholder="Please enter new avatar url" className="updateProfileForm form-control form-control-lg" required />
+                                    <input type="text" value={this.state.avatarUrl} onChange={this.collectFieldValue} name="avatar" placeholder="Please enter new avatar url or upload new avatar" className="updateProfileForm form-control form-control-lg" required />
                                 </div>
                                 <textarea value={this.state.about} onChange={this.collectFieldValue} name="about" placeholder="Please tell us something about yourself" rows="5" className="updateProfileForm form-control" required></textarea>
+                                {this.state.successfulUpload ? <p>Image successfully uploaded!</p> : ""}
                                 <input type="button" value="Update" onClick={this.updateProfile} className="updateProfileUpdateButton btn btn-info btn-lg" style={updateButtonStyle} />
-                                <input type="file" />
-                                <input type="button" id="profileImgUpload" onClick={this.uploadImage} value="Upload" />
+                                <input type="file" id="profileImgUpload" />
+                                <input type="button" onClick={this.uploadImage} value="Upload" />
                                 <p>{this.state.isThereError ? `Error ${this.state.error}: All inputs must be filled` : ""}</p>
                             </form>
                         </div>
