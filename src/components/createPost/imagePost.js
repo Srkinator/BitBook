@@ -68,12 +68,28 @@ class TextPost extends Component {
     render() {
         return (
             <div>
-                <input type="text" placeholder="This is an image post" rows="5" className="updateProfileForm form-control" onChange={this.getImagePost} required />
-                {this.state.successfulUpload ? <p>Image successfully uploaded!</p> : ""}
-                <input type="button" value="Post" className="updateProfileUpdateButton btn btn-info btn-lg" style={updateButtonStyle} name="imagePost" onClick={this.createImagePost} />
-                <input type="file" />
-                <input type="button" onClick={this.uploadImage} value="Upload" />
-                <p>{this.state.isThereError ? `Error ${this.state.error}` : ""}</p>
+                <div className="row">
+                    <div className="col-12">
+                        <input type="text" placeholder="This is an image post" rows="5" className="updateProfileForm form-control" onChange={this.getImagePost} required />
+                        {this.state.successfulUpload ? <p>Image successfully uploaded!</p> : ""}
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="col-12 col-lg-6">
+                        <input type="file"  className="form-control-file" style={{width: "90%", margin: "10px auto"}} />
+                    </div>
+
+                    <div className="col-12 col-lg-6">
+                        <input type="button" onClick={this.uploadImage} value="Upload" className="btn btn-info" style={{width: "90%", margin: "10px auto"}} />
+                    </div>
+                    <div className="col-12">
+                        <p>{this.state.isThereError ? `Error ${this.state.error}` : ""}</p>
+                    </div>
+                </div>
+                <div className="row">
+                    <input type="button" value="Post" className="updateProfileUpdateButton btn btn-info btn-lg" style={updateButtonStyle} name="imagePost" onClick={this.createImagePost} />
+                </div>
             </div>
         );
     }
