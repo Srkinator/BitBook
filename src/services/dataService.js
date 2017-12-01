@@ -63,7 +63,7 @@ class DataService {
     }
 
     getPosts(pagesToSkip, postsHandler, errorHandler) {
-        this.communication.getRequest(`Posts?$skip=${pagesToSkip}&$top=10`, (posts) => {
+        this.communication.getRequest(`Posts?$skip=${pagesToSkip}&$top=10&$orderby=DateCreated desc`, (posts) => {
             let postInfo = posts.data;
             let listOfPosts = [];
             postInfo.forEach((post) => {
