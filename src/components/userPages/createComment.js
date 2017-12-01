@@ -54,7 +54,7 @@ class CreateComment extends Component {
     render() {
         return (
             <div>
-                <textarea onChange={this.collectCommentContent} rows="3" cols="100" placeholder="Enter your comment here"></textarea>
+                <textarea onChange={this.collectCommentContent} value={this.state.comment} rows="3" cols="100" placeholder="Enter your comment here"></textarea>
                 <input type="button" value="Submit" onClick={this.postComment} />
             </div>
         );

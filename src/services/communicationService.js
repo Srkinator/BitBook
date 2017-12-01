@@ -78,6 +78,7 @@ class CommunicationService {
             .then(response => deleteHandler(response))
             .catch(error => errorHandler(error));
     }
+
 }
 
 export default CommunicationService;

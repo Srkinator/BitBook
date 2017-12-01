@@ -16,7 +16,8 @@ class TextPost extends Component {
         this.redirect = new RedirectionService();
 
         this.state = {
-            imagePostContent: ""
+            imagePostContent: "",
+            uploadedImage: ""
         };
 
         this.bindInit();
@@ -25,28 +26,50 @@ class TextPost extends Component {
     bindInit() {
         this.createImagePost = this.createImagePost.bind(this);
         this.getImagePost = this.getImagePost.bind(this);
+        this.uploadImage = this.uploadImage.bind(this);
     }
 
     getImagePost(event) {
         let imagePostContent = event.target.value;
-        
+
         this.setState({
             imagePostContent
         });
     }
 
     createImagePost() {
-        const imagePostBody = {
-            imageUrl: this.state.imagePostContent,
-        };
+        let imagePostBody = {};
+        if (!this.state.imagePostContent) {
+            imagePostBody = {
+                imageUrl: this.state.uploadedImage,
+            };
+            console.log(imagePostBody);
+        } else {
+            imagePostBody = {
+                imageUrl: this.state.imagePostContent,
+            };
+        }
         this.props.onPostCreate(imagePostBody, "image");
+    }
+
+    uploadImage() {
+        const file = document.querySelector("input[type=file]").files[0];
+        this.dataService.uploadImage(file, (response) => {
+            this.setState({
+                uploadedImage: response.data
+            });
+        }, (error) => {
+            console.log(error);
+        });
     }
 
     render() {
         return (
             <div>
-                <input type = "text" placeholder="This is an image post" rows="5" className="updateProfileForm form-control" onChange={this.getImagePost} required/>
+                <input type="text" placeholder="This is an image post" rows="5" className="updateProfileForm form-control" onChange={this.getImagePost} required />
                 <input type="button" value="Post" className="updateProfileUpdateButton btn btn-info btn-lg" style={updateButtonStyle} name="imagePost" onClick={this.createImagePost} />
+                <input type="file" />
+                <input type="button" onClick={this.uploadImage} value="Upload" />
                 <p>{this.state.isThereError ? `Error ${this.state.error}` : ""}</p>
             </div>
         );

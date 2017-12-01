@@ -86,13 +86,13 @@ class DataService {
             textPostContent,
             (response) => {
                 successHandler(response.data);
-            }, 
+            },
             (error) => {
                 errorHandler(error);
             });
     }
 
-    getSinglePost(postType, notifySinglePost, errorHandler){
+    getSinglePost(postType, notifySinglePost, errorHandler) {
         this.communication.getRequest(
             postType,
             (response) => {
@@ -112,16 +112,16 @@ class DataService {
         });
     }
 
-    postComment(body, successHandler, errorHandler){
-        this.communication.postRequest("Comments", body, (response) =>{
+    postComment(body, successHandler, errorHandler) {
+        this.communication.postRequest("Comments", body, (response) => {
             successHandler(response);
         }, (error) => {
             errorHandler(error);
         });
     }
 
-    getComments(postId, successHandler, errorHandler){
-        this.communication.getRequest(`Comments/?postId=${postId}`, (response) =>{
+    getComments(postId, successHandler, errorHandler) {
+        this.communication.getRequest(`Comments/?postId=${postId}`, (response) => {
             successHandler(response);
         }, (error) => {
             errorHandler(error);
@@ -131,6 +131,16 @@ class DataService {
     getPostCount(handleSuccess, errorHandler) {
         this.communication.getRequest("posts/count", (response) => {
             handleSuccess(response.data);
+        }, (error) => {
+            errorHandler(error);
+        });
+    }
+
+    uploadImage(body, handleSuccess, errorHandler) {
+        const file = new FormData();
+        file.append("file", body);
+        this.communication.postRequest("upload", file, (response) => {
+            handleSuccess(response);
         }, (error) => {
             errorHandler(error);
         });

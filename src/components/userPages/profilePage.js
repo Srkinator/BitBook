@@ -197,6 +197,18 @@ class UserProfile extends Component {
 
     }
 
+    uploadImage() {
+        const file = document.querySelector("input[type=file]").files[0];
+        console.log(file);
+        this.dataService.uploadImage(file, (response) => {
+            this.setState({
+                uploadedImage: response.data
+            });
+        }, (error) => {
+            console.log(error);
+        });
+    }
+
     displayModal() {
         return (
             <div>
@@ -223,6 +235,8 @@ class UserProfile extends Component {
                                 </div>
                                 <textarea value={this.state.about} onChange={this.collectFieldValue} name="about" placeholder="Please tell us something about yourself" rows="5" className="updateProfileForm form-control" required></textarea>
                                 <input type="button" value="Update" onClick={this.updateProfile} className="updateProfileUpdateButton btn btn-info btn-lg" style={updateButtonStyle} />
+                                <input type="file" />
+                                <input type="button" id="profileImgUpload" onClick={this.uploadImage} value="Upload" />
                                 <p>{this.state.isThereError ? `Error ${this.state.error}: All inputs must be filled` : ""}</p>
                             </form>
                         </div>
