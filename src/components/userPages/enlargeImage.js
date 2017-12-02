@@ -19,6 +19,7 @@ class EnlargeImage extends Component {
     }
 
     render() {
+        console.log(this.props);
         if (!this.props.imgSrc) {
             return <div></div>;
         } else {
