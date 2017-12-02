@@ -80,8 +80,8 @@ class DataService {
         });
     }
 
-    getPostsForInfiniteScroll(pagesToRender, postsHandler, errorHandler) {
-        this.communication.getRequest(`Posts?$top=${pagesToRender}&$orderby=DateCreated desc`, (posts) => {
+    getPostsForInfiniteScroll(postsToRender, postsHandler, errorHandler) {
+        this.communication.getRequest(`Posts?$top=${postsToRender}&$orderby=DateCreated desc`, (posts) => {
             let postInfo = posts.data;
             let listOfPosts = [];
             postInfo.forEach((post) => {

@@ -115,7 +115,7 @@ class Feed extends Component {
             newTop: 0,
             hasMore: true,
             visibility: "hidden",
-            enlargeImage: ""
+            enlargedImg: ""
         };
 
         this.bindInit();
@@ -138,6 +138,7 @@ class Feed extends Component {
         this.handlePageChange = this.handlePageChange.bind(this);
         this.toggleBackToTopButton = this.toggleBackToTopButton.bind(this);
         this.enlargeImage = this.enlargeImage.bind(this);
+        this.resetHidden = this.resetHidden.bind(this);
     }
     componentDidMount() {
         this.getPosts();
@@ -310,27 +311,20 @@ class Feed extends Component {
         }
 
         if (post.type === "image") {
-            return (
-                <div id="bigPicDiv">
-                    <img src={post.imageUrl} style={imgStyle} onClick={this.enlargeImage} />;
-                </div>
-            );
+            return <img src={post.imageUrl} style={imgStyle} onClick={this.enlargeImage} />;
         }
 
         return this.processVideoUrl(post.videoUrl);
     }
 
     enlargeImage(event) {
-        let img = event.target;
-        let bigDiv = document.querySelector("#bigPicDiv");
-
+        let img = event.target.src;
+        console.log(img);
         this.setState({
-            enlargeImg: img,
+            enlargedImg: img,
             visibility: ""
         });
 
-        bigDiv.setAttribute("position", "absolute");
-        bigDiv.setAttribute("width", "80%");
 
         // let()
     }
@@ -399,10 +393,16 @@ class Feed extends Component {
         document.documentElement.scrollTop = 0;
     }
 
+    resetHidden() {
+        this.setState({
+            visibility: "hidden"
+        });
+    }
+
     render() {
         return (
             <div className="container-fluid">
-                <EnlargeImage imgsrc={this.state.enlargeImage} visibility={this.state.visibility} />
+                <EnlargeImage imgSrc={this.state.enlargedImg} visibility={this.state.visibility} resetHiddenPic={this.resetHidden}/>
                 <div className="row">
                     <div className="col-12" style={{ marginTop: "30px", marginBottom: "10px" }}>
                         <button className="btn btn-info dropdown-toggle m-auto ml-xl-0" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{ display: "block" }} >
@@ -420,14 +420,16 @@ class Feed extends Component {
                         next={this.handlePageChange}
                         onScroll={this.toggleBackToTopButton}
                         hasMore={this.state.hasMore}
+                        scrollThreshold={0.7}
                         pullDownToRefreshContent={
                             <h3 style={{ textAlign: "center" }}>&#8595; Pull down to refresh</h3>
                         }
+
                         releaseToRefreshContent={
                             <h3 style={{ textAlign: "center" }}>&#8593; Release to refresh</h3>
                         }
                         endMessage={
-                            <p style={{ textAlign: "center" }}>
+                            <p style={{ textAlign: "center", position: "absolute", bottom: "0px" }}>
                                 <b>Yay! You have seen it all</b>
                             </p>
                         }>
