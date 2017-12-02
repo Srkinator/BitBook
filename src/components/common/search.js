@@ -35,7 +35,7 @@ class Search extends Component {
     render() {
         return (
             <div >
-                <input type="text" value={this.state.searchString} onChange={this.searchValue} placeholder = "Search users" className="form-control mr-sm-2" style={searchStyle}/>
+                <input type="text" value={this.state.searchString} onChange={this.searchValue} placeholder = {this.props.placeholder} className="form-control mr-sm-2" style={searchStyle}/>
             </div>
         );
     }

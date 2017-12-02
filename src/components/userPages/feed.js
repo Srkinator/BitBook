@@ -14,6 +14,7 @@ import VideoPost from "../createPost/videoPost";
 import SinglePostInfo from "../userPages/singlePostInfo";
 import { POSTS_PER_PAGE } from "../../constants";
 import EnlargeImage from "../userPages/enlargeImage";
+import Search from "../common/search";
 
 const rowStyle = {
     maxHeight: "200px"
@@ -33,7 +34,7 @@ const videoStyle = {
 
 const imgStyle = {
     borderRadius: "50px",
-    width: "60%",
+    width: "80%",
     margin: "10px auto",
     padding: "10px",
     border: "1px solid rgba(178,215,251,0.2)",
@@ -122,7 +123,9 @@ class Feed extends Component {
             hasMore: true,
             visibility: "hidden",
             enlargedImg: "",
-            isImgShown: false
+            isImgShown: false,
+            searchString: "",
+            matchedPosts: []
         };
 
         this.bindInit();
@@ -146,6 +149,8 @@ class Feed extends Component {
         this.toggleBackToTopButton = this.toggleBackToTopButton.bind(this);
         this.enlargeImage = this.enlargeImage.bind(this);
         this.resetHidden = this.resetHidden.bind(this);
+        this.catchSearch = this.catchSearch.bind(this);
+        this.filterResults = this.filterResults.bind(this);
     }
     componentDidMount() {
         this.getPosts();
@@ -154,7 +159,8 @@ class Feed extends Component {
     getPosts() {
         this.dataService.getPosts(0, POSTS_PER_PAGE, (posts) => {
             this.setState({
-                posts
+                posts: posts,
+                matchedPosts: posts
             });
         }, (error) => {
             console.log(error);
@@ -232,15 +238,15 @@ class Feed extends Component {
             <div className="row mx-auto" style={{ width: "100%" }}>
                 {posts.map((post) => {
                     return (
-                        <div key={post.id} className="col-12 col-xl-8 offset-xl-2" style={{ paddingBottom: "60px" }}>
+                        <div key={post.id} className="col-12 col-xl-8 offset-xl-2" style={{ paddingBottom: "20px" }}>
                             <div style={cardStyle}>
                                 <Link to={`/profile/${post.userId}`} >
-                                    <h2>{post.userDisplayName}</h2>
+                                    <h2 style={{ textAlign: "center", fontSize: "1.5em", paddingTop: "20px" }}>{post.userDisplayName}</h2>
                                 </Link>
                                 {this.getConcretePostTypeComponent(post)}
                                 <Link to={`/${post.type}/${post.id}`} >
-                                    <h4>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
-                                    <p>{post.type} post</p>
+                                    <h4 style={{ fontSize: "1.5em" }}>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
+                                    <p style={{ fontSize: "1em", paddingBottom: "20px" }}>{post.type} post</p>
                                 </Link>
                             </div>
                         </div>
@@ -350,6 +356,10 @@ class Feed extends Component {
             return this.showPosts(this.state.videoPosts);
         }
 
+        if(this.state.matchedPosts) {
+            return this.showPosts(this.state.matchedPosts);
+        }
+
         return this.showPosts(this.state.posts);
     }
 
@@ -408,16 +418,50 @@ class Feed extends Component {
         });
     }
 
+    catchSearch(searchString) {
+        this.setState({
+            searchString
+        });
+    }
+
+    filterResults(searchedString) {
+        const posts = this.state.posts;
+        console.log(posts);
+        let matchedPosts = [];
+        
+        if(searchedString === "") {
+            this.setState({
+                matchedPosts: this.state.posts
+            });
+            return;
+        }
+
+        matchedPosts = posts.filter((post) => {
+            if (post.type === "text") {
+                let postText = post.text.toLowerCase();
+                let searchString = searchedString.toLowerCase();
+
+                return postText.includes(searchString);
+            }
+        });
+
+        this.setState({
+            matchedPosts
+        });
+
+    }
+
     render() {
         return (
             <div className="container-fluid">
 
-                {this.state.isImgShown ? <EnlargeImage imgSrc={this.state.enlargedImg} visibility={this.state.visibility} resetHiddenPic={this.resetHidden}  /> : ""}
+                {this.state.isImgShown ? <EnlargeImage imgSrc={this.state.enlargedImg} visibility={this.state.visibility} resetHiddenPic={this.resetHidden} /> : ""}
                 <div className="row">
                     <div className="col-12" style={{ marginTop: "30px", marginBottom: "10px" }}>
                         <button className="btn btn-info dropdown-toggle m-auto ml-xl-0" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{ display: "block" }} >
                             Filter Content
                         </button>
+                        <Search dispatch={this.catchSearch} filterResults={this.filterResults} placeholder="Search Text Posts" />
                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <p className="dropdown-item" onClick={this.filterAllPosts} name="text">All Posts</p>
                             <p className="dropdown-item" onClick={this.filterTextPosts} name="text">Text Posts</p>

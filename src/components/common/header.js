@@ -7,8 +7,6 @@ const navLinkStyle = {
     transition: "font-weight 0.2s",
     transitionTimingFunction: "step-start",
     paddingLeft: "25px"
-
-
 };
 
 class Header extends Component {
@@ -17,10 +15,11 @@ class Header extends Component {
 
         this.logout = new AuthenticationService();
     }
+
     render() {
         return (
             <div>
-                <nav className="navbar navbar-expand-lg navbar-dark navColor ">
+                <nav className="navbar navbar-expand-lg navbar-dark navColor" >
                     <Link to="/feed">
                         <p className="navbar-brand" style={{ fontSize: "1.7em", fontWeight: "bold", paddingLeft: "15px", paddingTop: "10px" }}>BitBook</p>
                     </Link>

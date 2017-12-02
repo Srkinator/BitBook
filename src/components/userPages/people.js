@@ -93,7 +93,7 @@ class People extends Component {
     render() {
         return (
             <div className="container-fluid">
-                <Search dispatch={this.catchSearch} filterResults={this.filterResults} />
+                <Search dispatch={this.catchSearch} filterResults={this.filterResults} placeholder="Search Users"/>
                 <div className="row">
                     {this.state.matchedUsers.map((user) => {
                         return (
