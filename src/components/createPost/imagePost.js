@@ -44,7 +44,6 @@ class TextPost extends Component {
             imagePostBody = {
                 imageUrl: this.state.uploadedImage,
             };
-            console.log(imagePostBody);
         } else {
             imagePostBody = {
                 imageUrl: this.state.imagePostContent,

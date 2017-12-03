@@ -20,7 +20,6 @@ class GetComments extends Component {
 
     render() {
         const comments = this.props.comments;
-        console.log(comments);
         return (
             <div>
                 {comments.map((comment) => {

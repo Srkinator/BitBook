@@ -125,7 +125,8 @@ class Feed extends Component {
             enlargedImg: "",
             isImgShown: false,
             searchString: "",
-            matchedPosts: []
+            matchedPosts: [],
+            isSearchOn: false
         };
 
         this.bindInit();
@@ -332,7 +333,6 @@ class Feed extends Component {
 
     enlargeImage(event) {
         let img = event.target.src;
-        console.log(img);
         this.setState({
             isImgShown: true,
             enlargedImg: img,
@@ -356,7 +356,7 @@ class Feed extends Component {
             return this.showPosts(this.state.videoPosts);
         }
 
-        if(this.state.matchedPosts) {
+        if (this.state.isSearchOn) {
             return this.showPosts(this.state.matchedPosts);
         }
 
@@ -367,6 +367,7 @@ class Feed extends Component {
 
     handlePageChange() {
         this.dataService.getPostsForInfiniteScroll(this.state.newTop, (posts) => {
+            console.log(posts);
             this.setState({
                 posts: posts,
                 newTop: this.state.newTop + 10
@@ -426,12 +427,12 @@ class Feed extends Component {
 
     filterResults(searchedString) {
         const posts = this.state.posts;
-        console.log(posts);
         let matchedPosts = [];
-        
-        if(searchedString === "") {
+
+        if (searchedString === "") {
             this.setState({
-                matchedPosts: this.state.posts
+                matchedPosts: this.state.posts,
+                isSearchOn: false
             });
             return;
         }
@@ -446,7 +447,8 @@ class Feed extends Component {
         });
 
         this.setState({
-            matchedPosts
+            matchedPosts,
+            isSearchOn: true
         });
 
     }
@@ -488,16 +490,18 @@ class Feed extends Component {
                                 <b>Yay! You have seen it all</b>
                             </p>
                         }>
-                        {/* <Pagination
+                    </InfiniteScroll>
+                    {/* <Pagination
                         activePage={this.state.activePage}
                         itemsCountPerPage={POSTS_PER_PAGE}
                         totalItemsCount={this.state.totalPostsCount}
                         onChange={this.handlePageChange}
                     /> */}
-                    </InfiniteScroll>
                     {this.renderPosts()}
                     <input type="button" className="feedUpdateButton btn btn-info btn-lg" name="createPost" value="+" onClick={this.openModal} style={createButtonStyle} />
-                    <input value="Back to Top" type="button" onClick={this.backToTop} style={{ visibility: this.state.visibility, position: "fixed", bottom: "0" }} />
+                    <input className="btn btn-info btn-lg" value="Go Top" type="button" onClick={this.backToTop} style={{
+                        visibility: this.state.visibility, borderRadius: "35px", position: "fixed", bottom: "25px"
+                    }} />
                 </div>
 
                 <Modal
