@@ -21,7 +21,7 @@ const imgStyle = {
 class RenderPost extends Component {
     constructor(props) {
         super(props);
-    
+
         this.bindInit();
 
         this.dataService = new DataService();
@@ -33,7 +33,7 @@ class RenderPost extends Component {
         this.processVideoUrl = this.processVideoUrl.bind(this);
         this.deletePost = this.deletePost.bind(this);
     }
-    
+
     renderDeleteButton() {
         const isMyPost = this.props.isMyPost();
 

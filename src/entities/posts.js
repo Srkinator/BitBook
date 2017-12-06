@@ -8,5 +8,6 @@ export default class Post {
         this.imageUrl = data.imageUrl;
         this.videoUrl = data.videoUrl;
         this.type = data.type;
+        this.commentsNum = data.commentsNum;
     }
 }

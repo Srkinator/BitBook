@@ -247,8 +247,9 @@ class Feed extends Component {
                                 {this.getConcretePostTypeComponent(post)}
                                 <Link to={`/${post.type}/${post.id}`} >
                                     <h4 style={{ fontSize: "1.5em" }}>{new Date(post.dateCreated).toLocaleDateString()} at {new Date(post.dateCreated).toLocaleTimeString()}</h4>
-                                    <p style={{ fontSize: "1em", paddingBottom: "20px" }}>{post.type} post</p>
+                                    <p style={{ fontSize: "1em"}}>{post.type} post</p>
                                 </Link>
+                                <button className="btn btn-success btn-lg profileButton">Comments Number : {post.commentsNum}</button>
                             </div>
                         </div>
                     );
