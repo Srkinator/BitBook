@@ -49,6 +49,24 @@ class People extends Component {
     }
 
     componentDidMount() {
+
+        // Fetching users from localstorage if it exist, do not use network
+
+        // if(localStorage.getItem("users")) {
+        //     const users = JSON.parse(localStorage.getItem("users"));
+        //     console.log(users);
+
+        //     this.setState({
+        //         users,
+        //         matchedUsers: users
+        //     });
+        //     return ;
+        // }
+        // let toggler = false;
+        // if (localStorage.getItem("users")) {
+        //     toggler = true;
+        // }
+
         this.getData.getUsersData((users) => {
             this.setState({
                 users,
@@ -93,7 +111,7 @@ class People extends Component {
     render() {
         return (
             <div className="container-fluid">
-                <Search dispatch={this.catchSearch} filterResults={this.filterResults} placeholder="Search Users"/>
+                <Search dispatch={this.catchSearch} filterResults={this.filterResults} placeholder="Search Users" />
                 <div className="row">
                     {this.state.matchedUsers.map((user) => {
                         return (

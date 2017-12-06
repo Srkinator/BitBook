@@ -40,6 +40,7 @@ class AuthenticationService {
 
     logout() {
         sessionStorage.removeItem("sessionId");
+        localStorage.removeItem("users");
     }
 
     isUserAuthenticated() {

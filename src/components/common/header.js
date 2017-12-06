@@ -16,7 +16,9 @@ class Header extends Component {
         this.logout = new AuthenticationService();
     }
 
+
     render() {
+    
         return (
             <div>
                 <nav className="navbar navbar-expand-lg navbar-dark navColor" >

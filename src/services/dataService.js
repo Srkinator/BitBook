@@ -29,13 +29,23 @@ class DataService {
         });
     }
 
-    getUsersData(userDataHandler, errorHandler) {
+    getUsersData(userDataHandler, errorHandler ) {
+        const users = JSON.parse(localStorage.getItem("users"));
+        if (users) {
+            userDataHandler(users);
+            return ;
+        }
+
         this.communication.getRequest("users", (response) => {
             let userInfo = response.data;
             let listOfUsers = [];
+            if (!localStorage.getItem("users")) {
+                localStorage.setItem("users", JSON.stringify([]));
+            }
             userInfo.forEach((user) => {
                 const newUser = new User(user);
                 listOfUsers.push(newUser);
+                localStorage.setItem("users", JSON.stringify(listOfUsers));
             });
 
             userDataHandler(listOfUsers);
